@@ -23,6 +23,13 @@ public class Showtime {
     @Column(name = "show_time", nullable = false)
     private Date showTime;
 
+    public Showtime(){}
+    public Showtime(Movie movie, Cinema cinema, Date showTime) {
+        this.movie = movie;
+        this.cinema = cinema;
+        this.showTime = showTime;
+    }
+
     public int getId() {
         return id;
     }

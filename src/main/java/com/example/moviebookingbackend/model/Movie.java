@@ -32,6 +32,7 @@ public class Movie {
     @Column(name = "release_date", nullable = false)
     private Date releaseDate;
 
+    public Movie(){}
     public Movie(String title, String description, String genre, int ageLimit, String director, String actors, Date releaseDate) {
         this.title = title;
         this.description = description;

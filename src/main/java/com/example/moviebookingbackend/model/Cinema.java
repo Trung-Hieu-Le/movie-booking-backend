@@ -16,6 +16,12 @@ public class Cinema {
     @Column(nullable = false)
     private String location;
 
+    public Cinema(){}
+    public Cinema(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+
     public int getId() {
         return id;
     }

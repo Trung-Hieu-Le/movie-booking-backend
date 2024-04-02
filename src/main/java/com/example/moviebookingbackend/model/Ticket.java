@@ -21,6 +21,13 @@ public class Ticket {
     @Column(nullable = false)
     private BigDecimal price;
 
+    public Ticket(){}
+    public Ticket(Showtime showtime, String seatNumber, BigDecimal price) {
+        this.showtime = showtime;
+        this.seatNumber = seatNumber;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }
