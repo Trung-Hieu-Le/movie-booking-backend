@@ -14,11 +14,15 @@ public class Cinema {
     private String name;
 
     @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
     private String location;
 
     public Cinema(){}
-    public Cinema(String name, String location) {
+    public Cinema(String name, String city, String location) {
         this.name = name;
+        this.city = city;
         this.location = location;
     }
 
@@ -34,9 +38,11 @@ public class Cinema {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
 
     public String getLocation() {
         return location;

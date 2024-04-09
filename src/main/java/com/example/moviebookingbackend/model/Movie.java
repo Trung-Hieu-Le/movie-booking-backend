@@ -2,6 +2,7 @@ package com.example.moviebookingbackend.model;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -17,8 +18,8 @@ public class Movie {
     @Column
     private String description;
 
-    @Column(nullable = false)
-    private String genre;
+//    @Column(nullable = false)
+//    private String genre;
 
     @Column(name = "age_limit")
     private int ageLimit;
@@ -27,20 +28,40 @@ public class Movie {
     private String director;
 
     @Column(nullable = false)
+    private int price;
+
+    @Column(nullable = false)
     private String actors;
 
     @Column(name = "release_date", nullable = false)
     private Date releaseDate;
 
+//    @OneToMany(mappedBy = "movie")
+//    private List<Showtime> showtimes;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_id")
+    private List<Showtime> showtimes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "genre_relationships",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres;
+
     public Movie(){}
-    public Movie(String title, String description, String genre, int ageLimit, String director, String actors, Date releaseDate) {
+
+    public Movie(String title, String description, int ageLimit, String director, int price, String actors, Date releaseDate, List<Showtime> showtimes, List<Genre> genres) {
         this.title = title;
         this.description = description;
-        this.genre = genre;
         this.ageLimit = ageLimit;
         this.director = director;
+        this.price = price;
         this.actors = actors;
         this.releaseDate = releaseDate;
+        this.showtimes = showtimes;
+        this.genres = genres;
     }
 
     public int getId() {
@@ -67,12 +88,12 @@ public class Movie {
         this.description = description;
     }
 
-    public String getGenre() {
-        return genre;
+    public int getPrice() {
+        return price;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getAgeLimit() {
@@ -105,5 +126,21 @@ public class Movie {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public List<Showtime> getShowtimes() {
+        return showtimes;
+    }
+
+    public void setShowtimes(List<Showtime> showtimes) {
+        this.showtimes = showtimes;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 }
