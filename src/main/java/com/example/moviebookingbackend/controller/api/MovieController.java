@@ -21,11 +21,12 @@ public class MovieController {
     @GetMapping("/all-movies")
     public ResponseEntity<?> getAllMovies() {
         try {
-            // Truy vấn cơ sở dữ liệu để lấy danh sách tất cả các phim
-            List<Movie> movies = movieService.getAllMovies();
+//            List<Movie> movies = movieService.getAllMovies();
+            List<Movie> movies = movieService.getAllMoviesQuery();
             return new ResponseEntity<>(movies, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);        }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @GetMapping("/movies/{movieId}")
     public ResponseEntity<Movie> getMovieById(@PathVariable int movieId) {
