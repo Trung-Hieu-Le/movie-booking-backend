@@ -18,6 +18,9 @@ public class Movie {
     @Column
     private String description;
 
+    @Column
+    private String image;
+
 //    @Column(nullable = false)
 //    private String genre;
 
@@ -52,9 +55,10 @@ public class Movie {
 
     public Movie(){}
 
-    public Movie(String title, String description, int ageLimit, String director, int price, String actors, Date releaseDate, List<Showtime> showtimes, List<Genre> genres) {
+    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate, List<Showtime> showtimes, List<Genre> genres) {
         this.title = title;
         this.description = description;
+        this.image = image;
         this.ageLimit = ageLimit;
         this.director = director;
         this.price = price;
@@ -86,6 +90,14 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getPrice() {
