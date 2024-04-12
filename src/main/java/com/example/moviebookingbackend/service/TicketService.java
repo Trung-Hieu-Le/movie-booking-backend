@@ -1,9 +1,14 @@
-package com.example.moviebookingbackend.repository;
+package com.example.moviebookingbackend.service;
 
 import com.example.moviebookingbackend.model.Ticket;
+import com.example.moviebookingbackend.repository.SeatRelationshipRepository;
+import com.example.moviebookingbackend.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+@Component
 
 public class TicketService {
     private TicketRepository ticketRepository;

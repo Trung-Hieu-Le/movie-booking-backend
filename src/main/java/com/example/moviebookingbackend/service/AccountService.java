@@ -15,18 +15,15 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Account loginAction(String name, String password) throws Exception {
-        if (accountRepository.findByNameAndPassword(name, password) == null) {
-            throw new Exception("Wrong username or password");
-        }
-        return accountRepository.findByNameAndPassword(name, password);
+    public Account loginAction(String phone, String password) {
+//        if (accountRepository.findByPhoneAndPassword(phone, password) == null) {
+//            throw new Exception("Wrong phone or password");
+//        }
+        return accountRepository.findByPhoneAndPassword(phone, password);
     }
 
     public Account registerAction(Account account) throws Exception {
-        if (accountRepository.findByName(account.getName()) != null) {
-            throw new Exception("Username already exists");
-        }
-        else if (accountRepository.findByPhone(account.getPhone()) != null) {
+        if (accountRepository.findByPhone(account.getPhone()) != null) {
             throw new Exception("Phone already exists");
         }
 

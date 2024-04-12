@@ -32,17 +32,22 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         try {
-            String name = credentials.get("name");
+            String phone = credentials.get("phone");
             String password = credentials.get("password");
-
-            Account existingAccount = accountService.loginAction(name, password);
+            if (phone == null || phone.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone or password cannot be empty or contain only spaces");
+            }
+            if (!phone.matches("\\d+")){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone must be number only");
+            }
+            Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
                 return new ResponseEntity<>(existingAccount, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Wrong phone or password", HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid phone or password");
         }
     }
 
