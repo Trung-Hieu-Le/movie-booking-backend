@@ -15,19 +15,17 @@ public class SeatRelationship {
 //    private Ticket ticket;
 
     @Id
-    private int seat;
+    private String seat;
 
     public SeatRelationship() {}
 
-    public SeatRelationship(int seat) {
+    public SeatRelationship(String seat) {
         this.seat = seat;
     }
 
-    public int getSeat() {
-        return seat;
-    }
+    public String getSeat() { return seat; }
 
-    public void setSeat(int seat) {
+    public void setSeat(String seat) {
         this.seat = seat;
     }
 }

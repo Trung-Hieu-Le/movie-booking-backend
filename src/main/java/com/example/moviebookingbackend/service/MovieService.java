@@ -20,4 +20,6 @@ public class MovieService {
     public Movie getMovieById(int movieId) {
         return movieRepository.findById(movieId).orElse(null);
     }
+
+
 }
