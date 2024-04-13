@@ -61,6 +61,16 @@ public class AccountController {
         }
     }
 
+    @PutMapping("/change-password/{accountId}/{password}")
+    public ResponseEntity<String> changePassword(@PathVariable int accountId, @PathVariable String newPassword) {
+        boolean success = accountService.changePassword(accountId, newPassword);
+        if (success) {
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
+        }
+    }
+
     @PutMapping("/update-account/{accountId}")
     public ResponseEntity<String> updateAccount(@PathVariable int accountId, @RequestBody Map<String, String> accountDetails) {
         String newName = accountDetails.get("name");

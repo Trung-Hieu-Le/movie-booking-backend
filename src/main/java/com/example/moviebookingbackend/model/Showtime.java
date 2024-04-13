@@ -12,36 +12,26 @@ public class Showtime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "movie_id", nullable = false)
-//    private Movie movie;
+    @Column(name = "movie_id")
+    private int movieId;
 
-    @ManyToOne
-    @JoinColumn(name = "cinema_id", nullable = false)
-    private Cinema cinema;
+    @Column(name = "cinema_id")
+    private int cinemaId;
 
-
-    @Column(name = "show_time", nullable = false)
+    @Column(name = "show_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date showTime;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "showtime_id")
-    private List<Ticket> tickets;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "showtime_id")
+//    private List<Ticket> tickets;
 
     public Showtime(){}
 
-//    public Showtime(Movie movie, Cinema cinema, Date showTime, List<Ticket> tickets) {
-//        this.movie = movie;
-//        this.cinema = cinema;
-//        this.showTime = showTime;
-//        this.tickets = tickets;
-//    }
-
-
-    public Showtime(Cinema cinema, Date showTime, List<Ticket> tickets) {
-        this.cinema = cinema;
+    public Showtime(int movieId, int cinemaId, Date showTime) {
+        this.movieId = movieId;
+        this.cinemaId = cinemaId;
         this.showTime = showTime;
-        this.tickets = tickets;
     }
 
     public int getId() {
@@ -52,20 +42,20 @@ public class Showtime {
         this.id = id;
     }
 
-//    public Movie getMovie() {
-//        return movie;
-//    }
-//
-//    public void setMovie(Movie movie) {
-//        this.movie = movie;
-//    }
-
-    public Cinema getCinema() {
-        return cinema;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setCinema(Cinema cinema) {
-        this.cinema = cinema;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public int getCinemaId() {
+        return cinemaId;
+    }
+
+    public void setCinemaId(int cinemaId) {
+        this.cinemaId = cinemaId;
     }
 
     public Date getShowTime() {
@@ -74,13 +64,5 @@ public class Showtime {
 
     public void setShowTime(Date showTime) {
         this.showTime = showTime;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
     }
 }

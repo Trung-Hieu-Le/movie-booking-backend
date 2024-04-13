@@ -30,6 +30,17 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    public boolean changePassword(int accountId, String newPassword) {
+        Account account = accountRepository.findById(accountId);
+        if (account != null) {
+//            Account account = optionalAccount.get();
+            account.setPassword(newPassword);
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
+    }
+
     public boolean updateAccount(int accountId, String newName, String newPhone, String newEmail, String newPassword, Date newBirthday, String newGender) {
         Account account = accountRepository.findById(accountId);
         if (account != null) {

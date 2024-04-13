@@ -21,8 +21,8 @@ public class Movie {
     @Column
     private String image;
 
-//    @Column(nullable = false)
-//    private String genre;
+    @Column(name = "release_date")
+    private Date releaseDate;
 
     @Column(name = "age_limit")
     private int ageLimit;
@@ -31,19 +31,14 @@ public class Movie {
     private String director;
 
     @Column(nullable = false)
-    private int price;
-
-    @Column(nullable = false)
     private String actors;
 
-    @Column(name = "release_date", nullable = false)
-    private Date releaseDate;
+    @Column(nullable = false)
+    private int price;
 
-//    @OneToMany(mappedBy = "movie")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "movie_id")
 //    private List<Showtime> showtimes;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id")
-    private List<Showtime> showtimes;
 
     @ManyToMany
     @JoinTable(
@@ -55,7 +50,7 @@ public class Movie {
 
     public Movie(){}
 
-    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate, List<Showtime> showtimes, List<Genre> genres) {
+    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate, List<Genre> genres) {
         this.title = title;
         this.description = description;
         this.image = image;
@@ -64,7 +59,7 @@ public class Movie {
         this.price = price;
         this.actors = actors;
         this.releaseDate = releaseDate;
-        this.showtimes = showtimes;
+//        this.showtimes = showtimes;
         this.genres = genres;
     }
 
@@ -140,13 +135,13 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public List<Showtime> getShowtimes() {
-        return showtimes;
-    }
-
-    public void setShowtimes(List<Showtime> showtimes) {
-        this.showtimes = showtimes;
-    }
+//    public List<Showtime> getShowtimes() {
+//        return showtimes;
+//    }
+//
+//    public void setShowtimes(List<Showtime> showtimes) {
+//        this.showtimes = showtimes;
+//    }
 
     public List<Genre> getGenres() {
         return genres;
