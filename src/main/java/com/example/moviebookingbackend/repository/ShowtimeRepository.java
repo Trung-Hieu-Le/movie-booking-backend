@@ -14,5 +14,7 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
 
     List<Showtime> findByMovieIdAndCinemaId(int movieId, int cinemaId);
 
+    @Query("SELECT sr.seat FROM SeatRelationship sr WHERE sr.ticketId = :showtimeId")
+    List<String> findSeatsByShowtimeId(@Param("showtimeId") int showtimeId);
 }
 

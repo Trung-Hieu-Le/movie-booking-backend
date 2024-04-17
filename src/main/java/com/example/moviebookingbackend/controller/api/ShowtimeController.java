@@ -1,5 +1,6 @@
 package com.example.moviebookingbackend.controller.api;
 
+import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.model.Cinema;
 import com.example.moviebookingbackend.model.Showtime;
 import com.example.moviebookingbackend.service.ShowtimeService;
@@ -18,24 +19,32 @@ public class ShowtimeController {
     private ShowtimeService showtimeService;
 
     @GetMapping("/all-cinemas/{movieId}")
-    public ResponseEntity<List<Cinema>> getCinemasByMovieId(@PathVariable int movieId) {
+    public ResponseEntity<?> getCinemasByMovieId(@PathVariable int movieId) {
         try {
             List<Cinema> cinemas = showtimeService.getCinemasByMovieId(movieId);
-            return new ResponseEntity<>(cinemas, HttpStatus.OK);
+//            return new ResponseEntity<>(cinemas, HttpStatus.OK);
+            ApiResponse response = new ApiResponse("success", cinemas, "Get cinema successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse response = new ApiResponse("fail", null, "Failed to get cinema");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/get-showtime/{movieId}/{cinemaId}")
-    public ResponseEntity<List<Showtime>> getShowtimeByMovieIdAndCinemaId(
+    public ResponseEntity<?> getShowtimeByMovieIdAndCinemaId(
             @PathVariable int movieId,
             @PathVariable int cinemaId
     ) {
         try {
             List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
-            return new ResponseEntity<>(showtimes, HttpStatus.OK);
+//            return new ResponseEntity<>(showtimes, HttpStatus.OK);
+            ApiResponse response = new ApiResponse("success", showtimes, "Get showtime successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse response = new ApiResponse("fail", null, "Failed to get showtime");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 }

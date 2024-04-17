@@ -1,4 +1,5 @@
 package com.example.moviebookingbackend.controller.api;
+import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class TicketController {
     }
 
     @PostMapping("/book-ticket")
-    public ResponseEntity<String> bookTicket(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<?> bookTicket(@RequestBody Map<String, Object> requestBody) {
         try {
             int accountId = (int) requestBody.get("accountId");
             int showtimeId = (int) requestBody.get("showtimeId");
@@ -28,9 +29,13 @@ public class TicketController {
             int totalPrice = (int) requestBody.get("totalPrice");
 
             ticketService.bookTicket(accountId, showtimeId, seatList, totalPrice);
-            return ResponseEntity.ok("Ticket booked successfully");
+//            return ResponseEntity.ok("Ticket booked successfully");
+            ApiResponse response = new ApiResponse("success", null, "Book ticket successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to book ticket");
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to book ticket");
+            ApiResponse response = new ApiResponse("fail", null, "Failed to book ticket");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 }
