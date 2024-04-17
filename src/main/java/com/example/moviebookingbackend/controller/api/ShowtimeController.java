@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -37,7 +38,8 @@ public class ShowtimeController {
             @PathVariable int cinemaId
     ) {
         try {
-            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
+//            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
+            Map<String, Object> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
 //            return new ResponseEntity<>(showtimes, HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", showtimes, "Get showtime successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
