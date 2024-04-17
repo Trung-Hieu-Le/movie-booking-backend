@@ -1,6 +1,7 @@
 package com.example.moviebookingbackend.controller.api;
 
 import com.example.moviebookingbackend.model.Account;
+import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.repository.AccountRepository;
 import com.example.moviebookingbackend.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,11 @@ public class AccountController {
     public ResponseEntity<?> register(@RequestBody Account account) {
         try {
             Account savedAccount = accountService.registerAction(account);
-            return new ResponseEntity<>(savedAccount, HttpStatus.OK);
+            ApiResponse response = new ApiResponse("success", savedAccount, "Account registered successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse response = new ApiResponse("fail", null, "Failed to register account");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -35,19 +38,24 @@ public class AccountController {
             String phone = credentials.get("phone");
             String password = credentials.get("password");
             if (phone == null || phone.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone or password cannot be empty or contain only spaces");
+                ApiResponse response = new ApiResponse("fail", null, "Phone or password cannot be empty or contain only spaces");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
             if (!phone.matches("\\d+")){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone must be number only");
+                ApiResponse response = new ApiResponse("fail", null, "Phone must be number only");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
             Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
-                return new ResponseEntity<>(existingAccount, HttpStatus.OK);
+                ApiResponse response = new ApiResponse("success", existingAccount, "Login successful");
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Wrong phone or password", HttpStatus.NOT_FOUND);
+                ApiResponse response = new ApiResponse("fail", null, "Wrong phone or password");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid phone or password");
+            ApiResponse response = new ApiResponse("fail", null, "Invalid phone or password");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 

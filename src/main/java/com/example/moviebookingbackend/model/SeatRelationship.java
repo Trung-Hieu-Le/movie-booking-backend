@@ -9,7 +9,7 @@ public class SeatRelationship {
     @Column(name = "ticket_id")
     private int ticketId;
 
-    @Id
+//    @Id
     @Column(name = "seat", length = 10)
     private String seat;
 
