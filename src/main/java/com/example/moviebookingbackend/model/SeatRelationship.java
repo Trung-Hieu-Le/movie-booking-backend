@@ -5,25 +5,32 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "seat_relationships")
 public class SeatRelationship {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
-
-//    @Id
-//    @ManyToOne
-//    @JoinColumn(name = "ticket_id")
-//    private Ticket ticket;
+    @Id
+    @Column(name = "ticket_id")
+    private int ticketId;
 
     @Id
+    @Column(name = "seat", length = 10)
     private String seat;
 
     public SeatRelationship() {}
 
-    public SeatRelationship(String seat) {
+    public SeatRelationship(int ticketId, String seat) {
+        this.ticketId = ticketId;
         this.seat = seat;
     }
 
-    public String getSeat() { return seat; }
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public String getSeat() {
+        return seat;
+    }
 
     public void setSeat(String seat) {
         this.seat = seat;

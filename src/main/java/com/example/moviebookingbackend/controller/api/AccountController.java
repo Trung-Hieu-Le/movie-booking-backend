@@ -23,7 +23,7 @@ public class AccountController {
     public ResponseEntity<?> register(@RequestBody Account account) {
         try {
             Account savedAccount = accountService.registerAction(account);
-            return new ResponseEntity<>(savedAccount, HttpStatus.CREATED);
+            return new ResponseEntity<>(savedAccount, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -35,19 +35,19 @@ public class AccountController {
             String phone = credentials.get("phone");
             String password = credentials.get("password");
             if (phone == null || phone.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone or password cannot be empty or contain only spaces");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone or password cannot be empty or contain only spaces");
             }
             if (!phone.matches("\\d+")){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Phone must be number only");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone must be number only");
             }
             Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
                 return new ResponseEntity<>(existingAccount, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Wrong phone or password", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Wrong phone or password", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid phone or password");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid phone or password");
         }
     }
 
@@ -84,7 +84,7 @@ public class AccountController {
         try {
             newBirthday = dateFormat.parse(newBirthday0);
         } catch (Exception e) {
-            return new ResponseEntity<>("Invalid date format", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid date format", HttpStatus.NOT_FOUND);
         }
         boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newPassword, newBirthday, newGender);
         if (updated) {
