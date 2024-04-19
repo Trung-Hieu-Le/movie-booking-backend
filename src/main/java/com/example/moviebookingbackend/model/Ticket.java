@@ -23,9 +23,9 @@ public class Ticket {
     @Column(name = "account_id")
     private int accountId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id")
-    private List<SeatRelationship> seatRelationships;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ticket_id")
+//    private List<SeatRelationship> seatRelationships;
 
     @Column(name = "total_seat", nullable = false)
     private Integer totalSeat;
@@ -35,10 +35,10 @@ public class Ticket {
 
     public Ticket(){}
 
-    public Ticket(int showtimeId, int accountId, List<SeatRelationship> seatRelationships, Integer totalSeat, Integer totalPrice) {
+    public Ticket(int showtimeId, int accountId, Integer totalSeat, Integer totalPrice) {
         this.showtimeId = showtimeId;
         this.accountId = accountId;
-        this.seatRelationships = seatRelationships;
+//        this.seatRelationships = seatRelationships;
         this.totalSeat = totalSeat;
         this.totalPrice = totalPrice;
     }
@@ -67,13 +67,13 @@ public class Ticket {
         this.accountId = accountId;
     }
 
-    public List<SeatRelationship> getSeatRelationships() {
-        return seatRelationships;
-    }
-
-    public void setSeatRelationships(List<SeatRelationship> seatRelationships) {
-        this.seatRelationships = seatRelationships;
-    }
+//    public List<SeatRelationship> getSeatRelationships() {
+//        return seatRelationships;
+//    }
+//
+//    public void setSeatRelationships(List<SeatRelationship> seatRelationships) {
+//        this.seatRelationships = seatRelationships;
+//    }
 
     public Integer getTotalSeat() {
         return totalSeat;

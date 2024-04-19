@@ -17,6 +17,10 @@ public class MovieService {
     }
 
     public List<Movie> getAllMoviesQuery() {return movieRepository.findAllMoviesQuery(); }
+    public List<Movie> getAllMoviesWithShowtimesToday() {return movieRepository.findMoviesWithShowtimesToday(); }
+
+    public List<Movie> getAllMoviesWithShowtimesUpcoming() {return movieRepository.findMoviesWithShowtimesUpcoming(); }
+
     public Movie getMovieById(int movieId) {
         return movieRepository.findById(movieId).orElse(null);
     }

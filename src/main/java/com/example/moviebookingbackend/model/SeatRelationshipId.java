@@ -1,22 +1,15 @@
 package com.example.moviebookingbackend.model;
 
-import jakarta.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "seat_relationships")
-@IdClass(SeatRelationshipId.class)
-public class SeatRelationship {
-    @Id
-    @Column(name = "ticket_id")
+public class SeatRelationshipId implements Serializable {
     private int ticketId;
-//    @Column(name = "seat", length = 10)
-//    private String seat;
-    @Id
     private String seat;
 
-    public SeatRelationship() {}
+    public SeatRelationshipId() {
+    }
 
-    public SeatRelationship(int ticketId, String seat) {
+    public SeatRelationshipId(int ticketId, String seat) {
         this.ticketId = ticketId;
         this.seat = seat;
     }

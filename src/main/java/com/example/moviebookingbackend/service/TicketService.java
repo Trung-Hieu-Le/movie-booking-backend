@@ -7,12 +7,15 @@ import com.example.moviebookingbackend.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 
 public class TicketService {
+    @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
     private SeatRelationshipRepository seatRelationshipRepository;
 
 //    @Autowired
@@ -34,11 +37,19 @@ public class TicketService {
         Ticket savedTicket = ticketRepository.save(ticket);
 
         // Lưu thông tin vị trí ghế vào cơ sở dữ liệu
+//        for (String seat : seatList) {
+//            SeatRelationship seatRelationship = new SeatRelationship();
+//            seatRelationship.setTicketId(savedTicket.getId());
+//            seatRelationship.setSeat(seat);
+//            seatRelationshipRepository.save(seatRelationship);
+//        }
+        List<SeatRelationship> seatRelationships = new ArrayList<>();
         for (String seat : seatList) {
-            SeatRelationship seatRelationship = new SeatRelationship();
-            seatRelationship.setTicketId(savedTicket.getId());
-            seatRelationship.setSeat(seat);
-            seatRelationshipRepository.save(seatRelationship);
+            SeatRelationship seatRelationship = new SeatRelationship(savedTicket.getId(), seat);
+            seatRelationships.add(seatRelationship);
         }
+
+        // Lưu tất cả các mối quan hệ ghế vào cơ sở dữ liệu
+        seatRelationshipRepository.saveAll(seatRelationships);
     }
 }

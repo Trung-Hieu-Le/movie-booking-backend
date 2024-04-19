@@ -34,6 +34,7 @@ public class Showtime {
         this.showTime = showTime;
     }
 
+
     public int getId() {
         return id;
     }
@@ -65,4 +66,6 @@ public class Showtime {
     public void setShowTime(Date showTime) {
         this.showTime = showTime;
     }
+
 }
+

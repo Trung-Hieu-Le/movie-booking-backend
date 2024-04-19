@@ -33,6 +33,34 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/all-movies-today")
+    public ResponseEntity<?> getAllMoviesToday() {
+        try {
+//            List<Movie> movies = movieService.getAllMovies();
+            List<Movie> movies = movieService.getAllMoviesWithShowtimesToday();
+//            return new ResponseEntity<>(movies, HttpStatus.OK);
+            ApiResponse response = new ApiResponse("success", movies, "Get movies successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse response = new ApiResponse("fail", null, "Failed to get movies");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/all-movies-upcoming")
+    public ResponseEntity<?> getAllMoviesUpcoming() {
+        try {
+//            List<Movie> movies = movieService.getAllMovies();
+            List<Movie> movies = movieService.getAllMoviesWithShowtimesUpcoming();
+//            return new ResponseEntity<>(movies, HttpStatus.OK);
+            ApiResponse response = new ApiResponse("success", movies, "Get movies successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ApiResponse response = new ApiResponse("fail", null, "Failed to get movies");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
     @GetMapping("/movies/{movieId}")
     public ResponseEntity<?> getMovieById(@PathVariable int movieId) {
         Movie movie = movieService.getMovieById(movieId);

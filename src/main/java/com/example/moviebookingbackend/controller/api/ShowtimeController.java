@@ -37,16 +37,16 @@ public class ShowtimeController {
             @PathVariable int movieId,
             @PathVariable int cinemaId
     ) {
-        try {
+//        try {
 //            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
             Map<String, Object> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
 //            return new ResponseEntity<>(showtimes, HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", showtimes, "Get showtime successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get showtime");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+//        } catch (Exception e) {
+////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            ApiResponse response = new ApiResponse("fail", null, "Failed to get showtime");
+//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//        }
     }
 }

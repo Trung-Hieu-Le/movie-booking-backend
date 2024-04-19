@@ -29,12 +29,13 @@ public class ShowtimeService {
         result.put("showtimes", showtimes);
 
         // Find and merge Seats for all Showtimes
-        List<String> allSeats = new ArrayList<>();
+        Map<Showtime, List<String>> seatsMap = new HashMap<>();
         for (Showtime showtime : showtimes) {
             List<String> seats = showtimeRepository.findSeatsByShowtimeId(showtime.getId());
-            allSeats.addAll(seats);
+            seatsMap.put(showtime, seats);
+            result.put("seatsMap", seatsMap);
+
         }
-        result.put("allSeats", allSeats);
 
         return result;
     }
