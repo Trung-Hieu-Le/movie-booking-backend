@@ -34,7 +34,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
-//        try {
+        try {
             String phone = credentials.get("phone");
             String password = credentials.get("password");
             if (phone == null || phone.trim().isEmpty() || password == null || password.trim().isEmpty()) {
@@ -53,10 +53,10 @@ public class AccountController {
                 ApiResponse response = new ApiResponse("fail", null, "Wrong phone or password");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
-//        } catch (Exception e) {
-//            ApiResponse response = new ApiResponse("fail", null, "Invalid phone or password");
-//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//        }
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("fail", null, "Failed to login");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/get-account/{accountId}")

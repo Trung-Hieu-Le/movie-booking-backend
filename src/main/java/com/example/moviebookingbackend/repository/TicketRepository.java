@@ -6,5 +6,6 @@ import com.example.moviebookingbackend.model.Ticket;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
+    List<Ticket> findByAccountId(int accountId);
 //    List<Ticket> findByAccountId(Integer accountId);
 }

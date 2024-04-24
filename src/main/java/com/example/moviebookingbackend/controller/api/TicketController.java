@@ -20,6 +20,14 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+//    @GetMapping("/get-tickets-booked/{accountId}")
+//    public ResponseEntity<List<TicketInfo>> getTicketsByAccountId(@PathVariable int accountId) {
+//        List<TicketInfo> ticketInfos = ticketService.getTicketsByAccountId(accountId);
+//        if (ticketInfos.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(ticketInfos);
+//    }
     @PostMapping("/book-ticket")
     public ResponseEntity<?> bookTicket(@RequestBody Map<String, Object> requestBody) {
         try {
