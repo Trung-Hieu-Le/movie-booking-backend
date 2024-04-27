@@ -3,6 +3,7 @@ package com.example.moviebookingbackend.controller.api;
 import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.model.Cinema;
 import com.example.moviebookingbackend.model.Showtime;
+import com.example.moviebookingbackend.model.ShowtimeInfo;
 import com.example.moviebookingbackend.service.ShowtimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class ShowtimeController {
     ) {
 //        try {
 //            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
-            Map<String, Object> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
+            List<ShowtimeInfo> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
 //            return new ResponseEntity<>(showtimes, HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", showtimes, "Get showtime successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
