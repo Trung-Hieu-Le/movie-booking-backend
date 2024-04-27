@@ -1,10 +1,7 @@
 package com.example.moviebookingbackend.service;
 
 import com.example.moviebookingbackend.model.*;
-import com.example.moviebookingbackend.repository.CinemaRepository;
-import com.example.moviebookingbackend.repository.MovieRepository;
-import com.example.moviebookingbackend.repository.SeatRelationshipRepository;
-import com.example.moviebookingbackend.repository.TicketRepository;
+import com.example.moviebookingbackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +20,8 @@ public class TicketService {
     private MovieRepository movieRepository;
     @Autowired
     private CinemaRepository cinemaRepository;
+    @Autowired
+    private ShowtimeRepository showtimeRepository;
 //    @Autowired
 //    public TicketService(TicketRepository ticketRepository, SeatRelationshipRepository seatRelationshipRepository) {
 //        this.ticketRepository = ticketRepository;
@@ -58,28 +57,28 @@ public class TicketService {
         seatRelationshipRepository.saveAll(seatRelationships);
     }
 
-//    public List<TicketInfo> getTicketsByAccountId(int accountId) {
-//        List<Ticket> tickets = ticketRepository.findByAccountId(accountId);
-//        List<TicketInfo> ticketInfos = new ArrayList<>();
-//        for (Ticket ticket : tickets) {
-//            ticketInfos.add(buildTicketInfo(ticket));
-//        }
-//        return ticketInfos;
-//    }
+    public List<TicketInfo> getTicketsByAccountId(int accountId) {
+        List<Ticket> tickets = ticketRepository.findByAccountId(accountId);
+        List<TicketInfo> ticketInfos = new ArrayList<>();
+        for (Ticket ticket : tickets) {
+            ticketInfos.add(buildTicketInfo(ticket.getId()));
+        }
+        return ticketInfos;
+    }
 
-//    private TicketInfo buildTicketInfo(Ticket ticket) {
-//        Movie movie = movieRepository.findByTicketId(ticket.getId()).orElse(null);
-//        Cinema cinema = cinemaRepository.findByTicketId(ticket.getId()).orElse(null);
-//        Date showTime = ticket.getShowtime().getShowTime();
-//        List<String> seats = seatRelationshipRepository.findSeatsByTicketId(ticket.getId());
-//
-//        TicketInfo ticketInfo = new TicketInfo();
-//        ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "Unknown");
-//        ticketInfo.setMovieImage(movie != null ? movie.getImage() : "");
-//        ticketInfo.setCinemaName(cinema != null ? cinema.getName() : "Unknown");
-//        ticketInfo.setShowTime(showTime);
-//        ticketInfo.setSeats(seats);
-//
-//        return ticketInfo;
-//    }
+    private TicketInfo buildTicketInfo(int ticketId) {
+        Movie movie = movieRepository.findMovieByTicketId(ticketId).getFirst();
+        Cinema cinema = cinemaRepository.findCinemaByTicketId(ticketId).getFirst();
+        Date showTime = showtimeRepository.findShowtimeByTicketId(ticketId);
+        List<String> seats = seatRelationshipRepository.findSeatsByTicketId(ticketId);
+
+        TicketInfo ticketInfo = new TicketInfo();
+        ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "Unknown");
+        ticketInfo.setMovieImage(movie != null ? movie.getImage() : "");
+        ticketInfo.setCinemaName(cinema != null ? cinema.getName() : "Unknown");
+        ticketInfo.setShowTime(showTime);
+        ticketInfo.setSeats(seats);
+
+        return ticketInfo;
+    }
 }

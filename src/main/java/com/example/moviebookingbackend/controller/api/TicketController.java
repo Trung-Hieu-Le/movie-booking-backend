@@ -1,5 +1,7 @@
 package com.example.moviebookingbackend.controller.api;
 import com.example.moviebookingbackend.model.ApiResponse;
+import com.example.moviebookingbackend.model.Ticket;
+import com.example.moviebookingbackend.model.TicketInfo;
 import com.example.moviebookingbackend.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +22,23 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-//    @GetMapping("/get-tickets-booked/{accountId}")
-//    public ResponseEntity<List<TicketInfo>> getTicketsByAccountId(@PathVariable int accountId) {
-//        List<TicketInfo> ticketInfos = ticketService.getTicketsByAccountId(accountId);
-//        if (ticketInfos.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(ticketInfos);
-//    }
+    @GetMapping("/get-tickets-by-account/{accountId}")
+    public ResponseEntity<?> getTicketsByAccountId(@PathVariable int accountId) {
+        try {
+            List<TicketInfo> ticketInfos = ticketService.getTicketsByAccountId(accountId);
+            if (ticketInfos.isEmpty()) {
+                ApiResponse response = new ApiResponse("success", ticketInfos, "Get booked ticket by account successfully");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                ApiResponse response = new ApiResponse("success", null, "This account haven't booked yet");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
+        } catch(Exception e){
+            ApiResponse response = new ApiResponse("fail", null, "Failed to get ticket booked");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
     @PostMapping("/book-ticket")
     public ResponseEntity<?> bookTicket(@RequestBody Map<String, Object> requestBody) {
         try {

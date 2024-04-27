@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
@@ -21,5 +22,9 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
     List<String> findSeatsByShowtimeId(@Param("showtimeId") int showtimeId);
     @Query("SELECT t FROM Ticket t WHERE t.showtimeId = :showtimeId")
     List<Ticket> findTicketsByShowtimeId(@Param("showtimeId") int showtimeId);
+    @Query("SELECT s.showTime FROM Showtime s " +
+            "JOIN Ticket t ON s.id = t.showtimeId " +
+            " WHERE t.id = :ticketId")
+    Date findShowtimeByTicketId(@Param("ticketId") int ticketId);
 }
 
