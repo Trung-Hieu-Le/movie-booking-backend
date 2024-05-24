@@ -26,16 +26,16 @@ public class TicketController {
     public ResponseEntity<?> getTicketsByAccountId(@PathVariable int accountId) {
         try {
             List<TicketInfo> ticketInfos = ticketService.getTicketsByAccountId(accountId);
-            if (ticketInfos.isEmpty()) {
-                ApiResponse response = new ApiResponse("success", ticketInfos, "Get booked ticket by account successfully");
+            if (!ticketInfos.isEmpty()) {
+                ApiResponse response = new ApiResponse("success", ticketInfos, "Lấy lịch sử đặt vé thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                ApiResponse response = new ApiResponse("success", null, "This account haven't booked yet");
+                ApiResponse response = new ApiResponse("success", null, "Tài khoản chưa đặt vé");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
 
         } catch(Exception e){
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get ticket booked");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch sử đặt vé thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -49,11 +49,11 @@ public class TicketController {
 
             ticketService.bookTicket(accountId, showtimeId, seatList, totalPrice);
 //            return ResponseEntity.ok("Ticket booked successfully");
-            ApiResponse response = new ApiResponse("success", null, "Book ticket successfully");
+            ApiResponse response = new ApiResponse("success", null, "Đặt vé thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to book ticket");
-            ApiResponse response = new ApiResponse("fail", null, "Failed to book ticket");
+            ApiResponse response = new ApiResponse("fail", null, "Đặt vé thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }

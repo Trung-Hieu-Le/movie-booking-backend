@@ -73,9 +73,9 @@ public class TicketService {
         List<String> seats = seatRelationshipRepository.findSeatsByTicketId(ticketId);
 
         TicketInfo ticketInfo = new TicketInfo();
-        ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "Unknown");
+        ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "");
         ticketInfo.setMovieImage(movie != null ? movie.getImage() : "");
-        ticketInfo.setCinemaName(cinema != null ? cinema.getName() : "Unknown");
+        ticketInfo.setCinemaName(cinema != null ? cinema.getName() : "");
         ticketInfo.setShowTime(showTime);
         ticketInfo.setSeats(seats);
 

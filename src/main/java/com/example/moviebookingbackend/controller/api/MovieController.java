@@ -25,11 +25,11 @@ public class MovieController {
 //            List<Movie> movies = movieService.getAllMovies();
             List<Movie> movies = movieService.getAllMoviesQuery();
 //            return new ResponseEntity<>(movies, HttpStatus.OK);
-            ApiResponse response = new ApiResponse("success", movies, "Get movies successfully");
+            ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get movies");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -39,11 +39,11 @@ public class MovieController {
 //            List<Movie> movies = movieService.getAllMovies();
             List<Movie> movies = movieService.getAllMoviesWithShowtimesToday();
 //            return new ResponseEntity<>(movies, HttpStatus.OK);
-            ApiResponse response = new ApiResponse("success", movies, "Get movies successfully");
+            ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get movies");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -53,11 +53,11 @@ public class MovieController {
 //            List<Movie> movies = movieService.getAllMovies();
             List<Movie> movies = movieService.getAllMoviesWithShowtimesUpcoming();
 //            return new ResponseEntity<>(movies, HttpStatus.OK);
-            ApiResponse response = new ApiResponse("success", movies, "Get movies successfully");
+            ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get movies");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -66,11 +66,11 @@ public class MovieController {
         Movie movie = movieService.getMovieById(movieId);
         if (movie != null) {
 //            return new ResponseEntity<>(movie, HttpStatus.OK);
-            ApiResponse response = new ApiResponse("success", movie, "Get movie successfully");
+            ApiResponse response = new ApiResponse("success", movie, "Lấy chi tiết phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            ApiResponse response = new ApiResponse("fail", null, "Failed to get movie");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
