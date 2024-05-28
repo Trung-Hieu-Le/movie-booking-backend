@@ -10,17 +10,16 @@ import java.util.List;
 public class ShowtimeInfo {
     private int id;
     private int movieId;
-    private int cinemaId;
+//    private int cinemaId;
     private Date showTime;
     private List<String> seats;
 
     public ShowtimeInfo() {
     }
 
-    public ShowtimeInfo(int id, int movieId, int cinemaId, Date showTime, List<String> seats) {
+    public ShowtimeInfo(int id, int movieId, Date showTime, List<String> seats) {
         this.id = id;
         this.movieId = movieId;
-        this.cinemaId = cinemaId;
         this.showTime = showTime;
         this.seats = seats;
     }
@@ -41,13 +40,13 @@ public class ShowtimeInfo {
         this.movieId = movieId;
     }
 
-    public int getCinemaId() {
-        return cinemaId;
-    }
-
-    public void setCinemaId(int cinemaId) {
-        this.cinemaId = cinemaId;
-    }
+//    public int getCinemaId() {
+//        return cinemaId;
+//    }
+//
+//    public void setCinemaId(int cinemaId) {
+//        this.cinemaId = cinemaId;
+//    }
 
     public Date getShowTime() {
         return showTime;

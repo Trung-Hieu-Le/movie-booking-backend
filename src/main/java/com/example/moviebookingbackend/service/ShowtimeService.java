@@ -47,7 +47,22 @@ public class ShowtimeService {
             ShowtimeInfo showtimeInfo = new ShowtimeInfo();
             showtimeInfo.setId(showtime.getId());
             showtimeInfo.setMovieId(showtime.getMovieId());
-            showtimeInfo.setCinemaId(showtime.getCinemaId());
+//            showtimeInfo.setCinemaId(showtime.getCinemaId());
+            showtimeInfo.setShowTime(showtime.getShowTime());
+            showtimeInfo.setSeats(seats);
+            showtimeInfos.add(showtimeInfo);
+        }
+        return showtimeInfos;
+    }
+
+    public List<ShowtimeInfo> findShowtime(int movieId) {
+        List<Showtime> showtimes = showtimeRepository.findByMovieIdSortByShowtime(movieId);
+        List<ShowtimeInfo> showtimeInfos = new ArrayList<>();
+        for (Showtime showtime : showtimes) {
+            List<String> seats = showtimeRepository.findSeatsByShowtimeId(showtime.getId());
+            ShowtimeInfo showtimeInfo = new ShowtimeInfo();
+            showtimeInfo.setId(showtime.getId());
+            showtimeInfo.setMovieId(showtime.getMovieId());
             showtimeInfo.setShowTime(showtime.getShowTime());
             showtimeInfo.setSeats(seats);
             showtimeInfos.add(showtimeInfo);

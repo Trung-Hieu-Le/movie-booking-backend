@@ -63,11 +63,9 @@ public class AccountController {
     public ResponseEntity<?> getAccountById(@PathVariable int accountId) {
         Account account = accountService.getAccountById(accountId);
         if (account != null) {
-//            return new ResponseEntity<>(account, HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", account, "Lấy thông tin cá nhân thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-//            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
             ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
@@ -77,11 +75,9 @@ public class AccountController {
     public ResponseEntity<?> changePassword(@PathVariable int accountId, @PathVariable String oldPassword, @PathVariable String newPassword) {
         boolean success = accountService.changePassword(accountId, newPassword);
         if (success) {
-//            return ResponseEntity.ok("Password changed successfully");
             ApiResponse response = new ApiResponse("success", null, "Đổi mật khẩu thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
             ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
@@ -100,17 +96,14 @@ public class AccountController {
         try {
             newBirthday = dateFormat.parse(newBirthday0);
         } catch (Exception e) {
-//            return new ResponseEntity<>("Invalid date format", HttpStatus.NOT_FOUND);
             ApiResponse response = new ApiResponse("fail", null, "Sai định dạng ngày");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newPassword, newBirthday, newGender);
         if (updated) {
-//            return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", null, "Cập nhật thông tin thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-//            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
             ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
@@ -124,11 +117,9 @@ public class AccountController {
 
             boolean resetRequest = accountService.forgetPassword(phone, email, newPassword);
             if (resetRequest) {
-//            return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
                 ApiResponse response = new ApiResponse("success", null, "Đổi mật khẩu thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-//            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
                 ApiResponse response = new ApiResponse("fail", null, "Sai số điện thoại hoặc email");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }

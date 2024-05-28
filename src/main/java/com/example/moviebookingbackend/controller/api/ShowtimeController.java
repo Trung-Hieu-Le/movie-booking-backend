@@ -24,27 +24,36 @@ public class ShowtimeController {
     public ResponseEntity<?> getCinemasByMovieId(@PathVariable int movieId) {
         try {
             List<Cinema> cinemas = showtimeService.getCinemasByMovieId(movieId);
-//            return new ResponseEntity<>(cinemas, HttpStatus.OK);
             ApiResponse response = new ApiResponse("success", cinemas, "Lấy danh sách rạp phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách rạp phim thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/get-showtime/{movieId}/{cinemaId}")
-    public ResponseEntity<?> getShowtimeByMovieIdAndCinemaId(@PathVariable int movieId, @PathVariable int cinemaId) {
+    @GetMapping("/get-showtime/{movieId}")
+    public ResponseEntity<?> getShowtimeByMovieIdAndCinemaId(@PathVariable int movieId) {
         try {
-//            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
-            List<ShowtimeInfo> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
-//            return new ResponseEntity<>(showtimes, HttpStatus.OK);
+            List<ShowtimeInfo> showtimes = showtimeService.findShowtime(movieId);
             ApiResponse response = new ApiResponse("success", showtimes, "Lấy lịch chiếu thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             ApiResponse response = new ApiResponse("fail", null, "Lấy lịch chiếu thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+//    @GetMapping("/get-showtime/{movieId}/{cinemaId}")
+//    public ResponseEntity<?> getShowtimeByMovieIdAndCinemaId(@PathVariable int movieId, @PathVariable int cinemaId) {
+//        try {
+////            List<Showtime> showtimes = showtimeService.getShowtimeByMovieIdAndCinemaId(movieId, cinemaId);
+//            List<ShowtimeInfo> showtimes = showtimeService.findShowtimeWithSeats(movieId, cinemaId);
+////            return new ResponseEntity<>(showtimes, HttpStatus.OK);
+//            ApiResponse response = new ApiResponse("success", showtimes, "Lấy lịch chiếu thành công");
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        } catch (Exception e) {
+////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch chiếu thất bại");
+//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//        }
+//    }
 }
