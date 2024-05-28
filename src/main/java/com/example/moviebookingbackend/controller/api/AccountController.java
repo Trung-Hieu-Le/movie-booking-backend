@@ -115,5 +115,27 @@ public class AccountController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/forget-password")
+    public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> request) {
+        try {
+            String phone = request.get("phone");
+            String email = request.get("email");
+            String newPassword = request.get("newPassword");
+
+            boolean resetRequest = accountService.forgetPassword(phone, email, newPassword);
+            if (resetRequest) {
+//            return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
+                ApiResponse response = new ApiResponse("success", null, "Đổi mật khẩu thành công");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+//            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+                ApiResponse response = new ApiResponse("fail", null, "Sai số điện thoại hoặc email");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("fail", null, "Đăng nhập thất bại");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

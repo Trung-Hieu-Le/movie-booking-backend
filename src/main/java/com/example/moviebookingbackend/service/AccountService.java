@@ -61,4 +61,15 @@ public class AccountService {
         return accountRepository.findById(accountId);
     }
 
+    public boolean forgetPassword(String phone, String email, String newPassword) {
+        Account account = accountRepository.findByPhoneAndEmail(phone, email);
+
+        if (account != null) {
+            account.setPassword(newPassword);
+            accountRepository.save(account);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
