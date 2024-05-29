@@ -26,7 +26,7 @@ public class MovieController {
             ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -37,7 +37,7 @@ public class MovieController {
             ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -48,19 +48,25 @@ public class MovieController {
             ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/movies/{movieId}")
     public ResponseEntity<?> getMovieById(@PathVariable int movieId) {
-        Movie movie = movieService.getMovieById(movieId);
-        if (movie != null) {
-            ApiResponse response = new ApiResponse("success", movie, "Lấy chi tiết phim thành công");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại");
+        try {
+            Movie movie = movieService.getMovieById(movieId);
+            if (movie != null) {
+                ApiResponse response = new ApiResponse("success", movie, "Lấy chi tiết phim thành công");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+
     }
 }

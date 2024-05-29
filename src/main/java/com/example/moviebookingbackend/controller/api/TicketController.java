@@ -35,7 +35,7 @@ public class TicketController {
             }
 
         } catch(Exception e){
-            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch sử đặt vé thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch sử đặt vé thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -53,7 +53,7 @@ public class TicketController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to book ticket");
-            ApiResponse response = new ApiResponse("fail", null, "Đặt vé thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Đặt vé thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }

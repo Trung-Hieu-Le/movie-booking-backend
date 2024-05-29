@@ -27,7 +27,7 @@ public class ShowtimeController {
             ApiResponse response = new ApiResponse("success", cinemas, "Lấy danh sách rạp phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách rạp phim thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách rạp phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -38,7 +38,7 @@ public class ShowtimeController {
             ApiResponse response = new ApiResponse("success", showtimes, "Lấy lịch chiếu thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch chiếu thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy lịch chiếu thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
@@ -49,7 +49,7 @@ public class ShowtimeController {
             ApiResponse response = new ApiResponse("success", showtimes, "Lấy ghế đã đặt thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy ghế đã đặt thất bại");
+            ApiResponse response = new ApiResponse("fail", null, "Lấy ghế đã đặt thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
