@@ -32,13 +32,24 @@ public class ShowtimeController {
         }
     }
     @GetMapping("/get-showtime/{movieId}")
-    public ResponseEntity<?> getShowtimeByMovieIdAndCinemaId(@PathVariable int movieId) {
+    public ResponseEntity<?> getShowtimeByMovieId(@PathVariable int movieId) {
         try {
             List<ShowtimeInfo> showtimes = showtimeService.findShowtime(movieId);
             ApiResponse response = new ApiResponse("success", showtimes, "Lấy lịch chiếu thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Lấy lịch chiếu thất bại");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/get-seats/{movieId}/{showtimeId}")
+    public ResponseEntity<?> getShowtimeByMovieIdAndShowtimeId(@PathVariable int movieId, @PathVariable int showtimeId) {
+        try {
+            List<String> showtimes = showtimeService.findSeats(movieId, showtimeId);
+            ApiResponse response = new ApiResponse("success", showtimes, "Lấy ghế đã đặt thành công");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("fail", null, "Lấy ghế đã đặt thất bại");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }

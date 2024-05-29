@@ -69,4 +69,9 @@ public class ShowtimeService {
         }
         return showtimeInfos;
     }
+
+    public List<String> findSeats(int movieId, int showtimeId) {
+        List<String> seats = showtimeRepository.findSeatsByShowtimeId(showtimeId);
+        return seats;
+    }
 }
