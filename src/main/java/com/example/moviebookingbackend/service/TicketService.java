@@ -68,14 +68,12 @@ public class TicketService {
 
     private TicketInfo buildTicketInfo(int ticketId) {
         Movie movie = movieRepository.findMovieByTicketId(ticketId).getFirst();
-        Cinema cinema = cinemaRepository.findCinemaByTicketId(ticketId).getFirst();
         Date showTime = showtimeRepository.findShowtimeByTicketId(ticketId);
         List<String> seats = seatRelationshipRepository.findSeatsByTicketId(ticketId);
 
         TicketInfo ticketInfo = new TicketInfo();
         ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "");
         ticketInfo.setMovieImage(movie != null ? movie.getImage() : "");
-        ticketInfo.setCinemaName(cinema != null ? cinema.getName() : "");
         ticketInfo.setShowTime(showTime);
         ticketInfo.setSeats(seats);
 

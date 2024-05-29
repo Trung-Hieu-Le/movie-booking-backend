@@ -6,17 +6,15 @@ import java.util.List;
 public class TicketInfo {
     private String movieTitle;
     private String movieImage;
-    private String cinemaName;
     private Date showTime;
     private List<String> seats;
 
     public TicketInfo() {
     }
 
-    public TicketInfo(String movieTitle, String movieImage, String cinemaName, Date showTime, List<String> seats) {
+    public TicketInfo(String movieTitle, String movieImage, Date showTime, List<String> seats) {
         this.movieTitle = movieTitle;
         this.movieImage = movieImage;
-        this.cinemaName = cinemaName;
         this.showTime = showTime;
         this.seats = seats;
     }
@@ -35,14 +33,6 @@ public class TicketInfo {
 
     public void setMovieImage(String movieImage) {
         this.movieImage = movieImage;
-    }
-
-    public String getCinemaName() {
-        return cinemaName;
-    }
-
-    public void setCinemaName(String cinemaName) {
-        this.cinemaName = cinemaName;
     }
 
     public Date getShowTime() {

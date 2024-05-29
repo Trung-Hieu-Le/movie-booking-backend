@@ -41,14 +41,14 @@ public class AccountService {
         return false;
     }
 
-    public boolean updateAccount(int accountId, String newName, String newPhone, String newEmail, String newPassword, Date newBirthday, String newGender) {
+    public boolean updateAccount(int accountId, String newName, String newPhone, String newEmail, Date newBirthday, String newGender) {
         Account account = accountRepository.findById(accountId);
         if (account != null) {
 //            Account account = accountOptional.get();
             account.setName(newName);
             account.setPhone(newPhone);
             account.setEmail(newEmail);
-            account.setPassword(newPassword);
+            account.setPassword(account.getPassword());
             account.setBirthday(newBirthday);
             account.setGender(newGender);
             accountRepository.save(account);

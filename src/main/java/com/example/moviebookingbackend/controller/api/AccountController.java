@@ -88,7 +88,7 @@ public class AccountController {
         String newName = accountDetails.get("name");
         String newPhone = accountDetails.get("phone");
         String newEmail = accountDetails.get("email");
-        String newPassword = accountDetails.get("password");
+//        String newPassword = accountDetails.get("password");
         String newBirthday0 = accountDetails.get("birthday");
         String newGender = accountDetails.get("gender");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -99,7 +99,7 @@ public class AccountController {
             ApiResponse response = new ApiResponse("fail", null, "Sai định dạng ngày");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newPassword, newBirthday, newGender);
+        boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newBirthday, newGender);
         if (updated) {
             ApiResponse response = new ApiResponse("success", null, "Cập nhật thông tin thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
