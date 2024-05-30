@@ -60,8 +60,8 @@ public class MovieController {
                 ApiResponse response = new ApiResponse("success", movie, "Lấy chi tiết phim thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy chi tiết phim");
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại: "+e.getMessage());

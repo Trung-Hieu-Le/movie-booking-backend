@@ -39,11 +39,11 @@ public class AccountController {
             String password = credentials.get("password");
             if (phone == null || phone.trim().isEmpty() || password == null || password.trim().isEmpty()) {
                 ApiResponse response = new ApiResponse("fail", null, "Số điện thoại và mật khẩu không được để trống");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
             if (!phone.matches("\\d+")){
                 ApiResponse response = new ApiResponse("fail", null, "Số điện thoại chỉ được nhập chữ số");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
             Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
@@ -51,7 +51,7 @@ public class AccountController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ApiResponse response = new ApiResponse("fail", null, "Sai số điện thoại hoặc mật khẩu");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Đăng nhập thất bại: " + e.getMessage());
@@ -68,7 +68,7 @@ public class AccountController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e){
             ApiResponse response = new ApiResponse("fail", null, "Lấy thông tin cá nhân thất bại: " + e.getMessage());
@@ -85,7 +85,7 @@ public class AccountController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Đổi mật khẩu thất bại: " + e.getMessage());
@@ -108,7 +108,7 @@ public class AccountController {
                 newBirthday = dateFormat.parse(newBirthday0);
             } catch (Exception e) {
                 ApiResponse response = new ApiResponse("fail", null, "Sai định dạng ngày");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
             boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newBirthday, newGender);
             if (updated) {
@@ -116,7 +116,7 @@ public class AccountController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Cập nhật thông tin thất bại: " + e.getMessage());
@@ -136,7 +136,7 @@ public class AccountController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ApiResponse response = new ApiResponse("fail", null, "Sai số điện thoại hoặc email");
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Đổi mật khẩu thất bại: " + e.getMessage());
