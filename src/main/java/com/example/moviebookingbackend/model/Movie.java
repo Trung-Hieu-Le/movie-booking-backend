@@ -40,17 +40,18 @@ public class Movie {
 //    @JoinColumn(name = "movie_id")
 //    private List<Showtime> showtimes;
 
-    @ManyToMany
-    @JoinTable(
-            name = "genre_relationships",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Genre> genres;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "genre_relationships",
+//            joinColumns = @JoinColumn(name = "movie_id"),
+//            inverseJoinColumns = @JoinColumn(name = "genre_id")
+//    )
+//    private List<Genre> genres;
+//    private List<String> genres;
 
     public Movie(){}
 
-    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate, List<Genre> genres) {
+    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate) {
         this.title = title;
         this.description = description;
         this.image = image;
@@ -60,7 +61,7 @@ public class Movie {
         this.actors = actors;
         this.releaseDate = releaseDate;
 //        this.showtimes = showtimes;
-        this.genres = genres;
+//        this.genres = genres;
     }
 
     public int getId() {
@@ -143,11 +144,11 @@ public class Movie {
 //        this.showtimes = showtimes;
 //    }
 
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
+//    public List<String> getGenres() {
+//        return genres;
+//    }
+//
+//    public void setGenres(List<String> genres) {
+//        this.genres = genres;
+//    }
 }

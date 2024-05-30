@@ -23,4 +23,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
             "JOIN Ticket t ON s.id = t.showtimeId " +
             "WHERE t.id = :ticketId")
     List<Movie> findMovieByTicketId(@Param("ticketId") int ticketId);
+
+    @Query("SELECT g.name FROM Genre g " +
+            "JOIN GenreRelationship gr ON g.id = gr.genreId " +
+            "WHERE gr.movieId = :movieId")
+    List<String> findGenresByMovieId(@Param("movieId") int movieId);
 }

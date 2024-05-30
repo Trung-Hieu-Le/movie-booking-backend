@@ -7,36 +7,30 @@ import jakarta.persistence.*;
 //@IdClass(GenreRelationshipId.class)
 public class GenreRelationship {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
-
+    @Column(name = "movie_id")
+    private int movieId;
     @Id
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @Column(name = "genre_id")
+    private int genreId;
 
-    public GenreRelationship() {
+    public GenreRelationship(int movieId, int genreId) {
+        this.movieId = movieId;
+        this.genreId = genreId;
     }
 
-    public GenreRelationship(Movie movie, Genre genre) {
-        this.movie = movie;
-        this.genre = genre;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public int getGenreId() {
+        return genreId;
     }
 
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
     }
 }

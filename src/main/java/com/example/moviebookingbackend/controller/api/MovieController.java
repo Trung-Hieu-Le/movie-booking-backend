@@ -2,6 +2,7 @@ package com.example.moviebookingbackend.controller.api;
 
 import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.model.Movie;
+import com.example.moviebookingbackend.model.MovieInfo;
 import com.example.moviebookingbackend.repository.MovieRepository;
 import com.example.moviebookingbackend.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class MovieController {
     @GetMapping("/all-movies")
     public ResponseEntity<?> getAllMovies() {
         try {
-            List<Movie> movies = movieService.getAllMoviesQuery();
+            List<MovieInfo> movies = movieService.getAllMoviesQuery();
             ApiResponse response = new ApiResponse("success", movies, "Lấy danh sách phim thành công");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class MovieController {
     @GetMapping("/movies/{movieId}")
     public ResponseEntity<?> getMovieById(@PathVariable int movieId) {
         try {
-            Movie movie = movieService.getMovieById(movieId);
+            MovieInfo movie = movieService.getMovieById(movieId);
             if (movie != null) {
                 ApiResponse response = new ApiResponse("success", movie, "Lấy chi tiết phim thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
