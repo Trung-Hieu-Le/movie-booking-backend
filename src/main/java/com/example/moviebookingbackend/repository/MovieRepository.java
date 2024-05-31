@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    @Query(value = "SELECT * FROM movies", nativeQuery = true)
+    @Query(value = "SELECT m FROM Movie m")
     List<Movie> findAllMoviesQuery();
 
     @Query("SELECT m FROM Movie m JOIN Showtime s ON m.id = s.movieId WHERE DATE(s.showTime) = CURRENT_DATE")

@@ -41,10 +41,10 @@ public class AccountController {
                 ApiResponse response = new ApiResponse("fail", null, "Số điện thoại và mật khẩu không được để trống");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            if (!phone.matches("\\d+")){
-                ApiResponse response = new ApiResponse("fail", null, "Số điện thoại chỉ được nhập chữ số");
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
+//            if (!phone.matches("\\d+")){
+//                ApiResponse response = new ApiResponse("fail", null, "Số điện thoại chỉ được nhập chữ số");
+//                return new ResponseEntity<>(response, HttpStatus.OK);
+//            }
             Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
                 ApiResponse response = new ApiResponse("success", existingAccount, "Đăng nhập thành công");
@@ -79,12 +79,12 @@ public class AccountController {
     @PutMapping("/change-password/{accountId}/{oldPassword}/{newPassword}")
     public ResponseEntity<?> changePassword(@PathVariable int accountId, @PathVariable String oldPassword, @PathVariable String newPassword) {
         try {
-            boolean success = accountService.changePassword(accountId, newPassword);
+            boolean success = accountService.changePassword(accountId, oldPassword, newPassword);
             if (success) {
                 ApiResponse response = new ApiResponse("success", null, "Đổi mật khẩu thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
+                ApiResponse response = new ApiResponse("fail", null, "Sai mật khẩu cũ");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
         } catch (Exception e) {
