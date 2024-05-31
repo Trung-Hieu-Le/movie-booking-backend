@@ -14,15 +14,15 @@ public class ShowtimeService {
     @Autowired
     private ShowtimeRepository showtimeRepository;
 
-    public List<Cinema> getCinemasByMovieId(int movieId) {
-        return showtimeRepository.findCinemasByMovieId(movieId);
-    }
+//    public List<Cinema> getCinemasByMovieId(int movieId) {
+//        return showtimeRepository.findCinemasByMovieId(movieId);
+//    }
 
-    public List<Showtime> getShowtimeByMovieIdAndCinemaId(int movieId, int cinemaId) {
-        return showtimeRepository.findByMovieIdAndCinemaId(movieId, cinemaId);
-    }
+//    public List<Showtime> getShowtimeByMovieIdAndCinemaId(int movieId, int cinemaId) {
+//        return showtimeRepository.findByMovieIdAndCinemaId(movieId, cinemaId);
+//    }
 
-    public List<ShowtimeInfo> findShowtimeWithSeats(int movieId, int cinemaId) {
+//    public List<ShowtimeInfo> findShowtimeWithSeats(int movieId, int cinemaId) {
 //        Map<String, Object> result = new HashMap<>();
 //
 //        // Find Showtime
@@ -39,21 +39,21 @@ public class ShowtimeService {
 //        }
 //
 //        return result;
-
-        List<Showtime> showtimes = showtimeRepository.findByMovieIdAndCinemaId(movieId, cinemaId);
-        List<ShowtimeInfo> showtimeInfos = new ArrayList<>();
-        for (Showtime showtime : showtimes) {
-            List<String> seats = showtimeRepository.findSeatsByShowtimeId(showtime.getId());
-            ShowtimeInfo showtimeInfo = new ShowtimeInfo();
-            showtimeInfo.setId(showtime.getId());
-            showtimeInfo.setMovieId(showtime.getMovieId());
-//            showtimeInfo.setCinemaId(showtime.getCinemaId());
-            showtimeInfo.setShowTime(showtime.getShowTime());
-            showtimeInfo.setSeats(seats);
-            showtimeInfos.add(showtimeInfo);
-        }
-        return showtimeInfos;
-    }
+//
+//        List<Showtime> showtimes = showtimeRepository.findByMovieIdAndCinemaId(movieId, cinemaId);
+//        List<ShowtimeInfo> showtimeInfos = new ArrayList<>();
+//        for (Showtime showtime : showtimes) {
+//            List<String> seats = showtimeRepository.findSeatsByShowtimeId(showtime.getId());
+//            ShowtimeInfo showtimeInfo = new ShowtimeInfo();
+//            showtimeInfo.setId(showtime.getId());
+//            showtimeInfo.setMovieId(showtime.getMovieId());
+////            showtimeInfo.setCinemaId(showtime.getCinemaId());
+//            showtimeInfo.setShowTime(showtime.getShowTime());
+//            showtimeInfo.setSeats(seats);
+//            showtimeInfos.add(showtimeInfo);
+//        }
+//        return showtimeInfos;
+//    }
 
     public List<ShowtimeInfo> findShowtime(int movieId) {
         List<Showtime> showtimes = showtimeRepository.findByMovieIdSortByShowtime(movieId);

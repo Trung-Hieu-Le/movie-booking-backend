@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
-    @Query("SELECT c FROM Cinema c JOIN Showtime s ON c.id = s.cinemaId WHERE s.movieId = :movieId")
-    List<Cinema> findCinemasByMovieId(@Param("movieId") int movieId);
+//    @Query("SELECT c FROM Cinema c JOIN Showtime s ON c.id = s.cinemaId WHERE s.movieId = :movieId")
+//    List<Cinema> findCinemasByMovieId(@Param("movieId") int movieId);
 
-    List<Showtime> findByMovieIdAndCinemaId(int movieId, int cinemaId);
+//    List<Showtime> findByMovieIdAndCinemaId(int movieId, int cinemaId);
 
     @Query("SELECT sr.seat FROM SeatRelationship sr " +
             "JOIN Ticket t ON t.id = sr.ticketId " +

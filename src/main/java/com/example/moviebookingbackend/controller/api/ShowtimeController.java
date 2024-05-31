@@ -20,17 +20,17 @@ public class ShowtimeController {
     @Autowired
     private ShowtimeService showtimeService;
 
-    @GetMapping("/all-cinemas/{movieId}")
-    public ResponseEntity<?> getCinemasByMovieId(@PathVariable int movieId) {
-        try {
-            List<Cinema> cinemas = showtimeService.getCinemasByMovieId(movieId);
-            ApiResponse response = new ApiResponse("success", cinemas, "Lấy danh sách rạp phim thành công");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách rạp phim thất bại: "+e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-    }
+//    @GetMapping("/all-cinemas/{movieId}")
+//    public ResponseEntity<?> getCinemasByMovieId(@PathVariable int movieId) {
+//        try {
+//            List<Cinema> cinemas = showtimeService.getCinemasByMovieId(movieId);
+//            ApiResponse response = new ApiResponse("success", cinemas, "Lấy danh sách rạp phim thành công");
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        } catch (Exception e) {
+//            ApiResponse response = new ApiResponse("fail", null, "Lấy danh sách rạp phim thất bại: "+e.getMessage());
+//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//        }
+//    }
     @GetMapping("/get-showtime/{movieId}")
     public ResponseEntity<?> getShowtimeByMovieId(@PathVariable int movieId) {
         try {
