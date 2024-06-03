@@ -24,7 +24,7 @@ public class AccountService {
 
     public Account registerAction(Account account) throws Exception {
         if (accountRepository.findByPhone(account.getPhone()) != null) {
-            throw new Exception("Phone already exists");
+            throw new Exception("Số điện thoại đã tồn tại");
         }
 
         return accountRepository.save(account);
