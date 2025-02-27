@@ -1,0 +1,18 @@
+<div th:insert="layout/header :: body"></div>
+
+<div class="container mt-4">
+    <h2>Phim Sắp Chiếu</h2>
+    <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner" id="carouselMovies">
+            <!-- Dữ liệu từ API sẽ được load vào đây -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div th:insert="layout/footer :: body"></div>
