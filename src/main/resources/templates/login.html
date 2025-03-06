@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Đăng nhập</h2>
+        </div>
+        <div class="card-body">
+            <div id="loginMessage" class="bg-danger text-light p-3 my-3" style="display: none;">
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Số điện thoại:</label>
+                    <input type="text" class="form-control" name="phone" id="phone" required pattern="\d*">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="password" class="form-control" name="password" id="password" required>
+                </div>
+                <hr>
+                <a href="/forget-password" class="text-dark">Quên mật khẩu?</a>
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                <button type="button" class="btn btn-info" onclick="window.location.href='/register'">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/foot"></div>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event){
+        event.preventDefault();
+        const loginMessage = document.getElementById("loginMessage");
+        loginMessage.style.display = 'none';
+
+        axios.post('/api/login', {
+            phone: document.getElementById('phone').value,
+            password: document.getElementById('password').value
+        })
+        .then(res => {
+            const data = res.data;
+            loginMessage.innerText = data.message;
+            loginMessage.classList.remove('bg-danger');
+            loginMessage.classList.add('bg-success');
+            loginMessage.style.display = 'block';
+            if (data.status === 'success') {
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 1000); // Chờ nhẹ 1s để người dùng thấy thông báo
+            }
+        })
+        .catch(err => {
+            const errorMessage = err.response?.data?.message || "Lỗi hệ thống, vui lòng thử lại sau!";
+            loginMessage.innerText = errorMessage;
+            loginMessage.classList.remove('bg-success');
+            loginMessage.classList.add('bg-danger');
+            loginMessage.style.display = 'block';
+        });
+    });
+</script>
+</body>
+</html>

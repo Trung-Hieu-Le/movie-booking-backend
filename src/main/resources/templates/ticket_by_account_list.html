@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<title>Lịch sử đặt vé</title>
+
+<head th:replace="fragments/head :: head"></head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+
+  .ticket {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+
+  .ticket img {
+    width: 150px;
+    height: auto;
+  }
+
+  .ticket-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .seats {
+    margin-top: 10px;
+  }
+</style>
+
+<body>
+  <header th:replace="fragments/header :: header"></header>
+
+  <div class="container mt-5">
+    <h1>Lịch sử đặt vé</h1>
+
+    <div th:if="${tickets != null}">
+      <div th:each="ticket : ${tickets}" class="ticket">
+        <div class="ticket-title" th:text="${ticket.movieTitle}"></div>
+        <img th:src="${ticket.movieImage}" alt="Movie Image" />
+        <p>
+          <strong>Suất chiếu:</strong>
+          <span th:text="${#dates.format(ticket.showTime, 'dd/MM/yyyy HH:mm')}"></span>
+        </p>
+        <p class="seats"><strong>Ghế:</strong>
+          <span th:each="seat, iterStat : ${ticket.seats}">
+            <span th:text="${seat}"></span><span th:if="${!iterStat.last}">, </span>
+          </span>
+        </p>
+
+      </div>
+    </div>
+    <div th:if="${tickets == null}">
+      <div id="loginMessage" class="bg-danger text-light p-3 my-3">
+        <span th:text=${message}></span>
+      </div>
+    </div>
+  </div>
+
+  <footer th:replace="fragments/footer :: footer"></footer>
+  <div th:replace="fragments/foot"></div>
+</body>
+
+</html>

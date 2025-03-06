@@ -20,6 +20,8 @@
         const container = document.getElementById(containerId);
         container.innerHTML = "";
         movies.forEach((movie) => {
+          console.log(movie);
+          
           container.innerHTML += `
                     <div class="col-md-3 mb-4">
                         <div class="card h-100">
@@ -34,9 +36,6 @@
                                 <p class="card-text"><strong>Ngày chiếu:</strong> ${new Date(
                                   movie.releaseDate
                                 ).toLocaleDateString()}</p>
-                                <p class="card-text"><strong>Thể loại:</strong> ${movie.genres.join(
-                                  ", "
-                                )}</p>
                                 <p class="card-text"><strong>Giá vé:</strong> ${movie.price.toLocaleString()} VNĐ</p>
                             </div>
                                 <a href="/movie-detail/${movie.id}" class="btn btn-primary">Xem chi tiết</a>
@@ -48,8 +47,9 @@
 
       // Gọi API lấy dữ liệu phim
       axios
-        .get("/api/all-movies")
+        .get("/api/all-movies-today")
         .then((res) => {
+          console.log(res.data.data);
           if (res.data.status === "success") {
             renderMovies("all-movies", res.data.data);
           }
@@ -58,6 +58,7 @@
           document.getElementById("all-movies").innerHTML =
             "<p>Không thể tải danh sách phim.</p>";
         });
+
     </script>
   </body>
 </html>

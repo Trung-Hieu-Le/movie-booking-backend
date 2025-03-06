@@ -68,6 +68,5 @@ public class MovieController {
             ApiResponse response = new ApiResponse("fail", null, "Lấy chi tiết phim thất bại: "+e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-
     }
 }

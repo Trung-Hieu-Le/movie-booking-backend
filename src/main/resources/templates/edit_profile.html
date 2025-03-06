@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Chỉnh sửa thông tin cá nhân</h2>
+        </div>
+        <div class="card-body">
+            <form id="edit-form">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Tên:</label>
+                    <input type="text" id="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Số điện thoại:</label>
+                    <input type="text" id="phone" class="form-control" pattern="\d*">
+                </div>
+                <div class="mb-3">
+                    <label for="birthday" class="form-label">Ngày sinh:</label>
+                    <input type="date" id="birthday" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính:</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="nam" required checked>
+                        <label class="form-check-label" for="male">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="nữ" required>
+                        <label class="form-check-label" for="female">Nữ</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/profile'">Hủy</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/foot"></div>
+
+<script>
+    const accountId = [[${accountId}]];
+
+    axios.get(`/api/get-account/${accountId}`).then(res => {
+        if (res.data.status === "success") {
+            const acc = res.data.data;
+            document.getElementById('name').value = acc.name;
+            document.getElementById('email').value = acc.email;
+            document.getElementById('phone').value = acc.phone;
+            document.getElementById('birthday').value = acc.birthday.split('T')[0];
+            if (acc.gender === 'nam') {
+                document.getElementById('male').checked = true;
+            } else {
+                document.getElementById('female').checked = true;
+            }
+        }
+    });
+
+    document.getElementById('edit-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        axios.put(`/api/update-account/${accountId}`, {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            birthday: document.getElementById('birthday').value,
+            gender: document.querySelector('input[name="gender"]:checked').value
+        }).then(res => {
+            alert(res.data.message);
+            if (res.data.status === "success") location.href = "/profile";
+        });
+    });
+</script>
+</body>
+</html>

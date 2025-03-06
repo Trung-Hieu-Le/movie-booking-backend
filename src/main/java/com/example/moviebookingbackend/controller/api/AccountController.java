@@ -4,6 +4,9 @@ import com.example.moviebookingbackend.model.Account;
 import com.example.moviebookingbackend.model.ApiResponse;
 import com.example.moviebookingbackend.repository.AccountRepository;
 import com.example.moviebookingbackend.service.AccountService;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +31,12 @@ public class AccountController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Đăng ký thất bại: " + e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<?> login(HttpSession session, @RequestBody Map<String, String> credentials) {
         try {
             String phone = credentials.get("phone");
             String password = credentials.get("password");
@@ -41,12 +44,14 @@ public class AccountController {
                 ApiResponse response = new ApiResponse("fail", null, "Số điện thoại và mật khẩu không được để trống");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-//            if (!phone.matches("\\d+")){
-//                ApiResponse response = new ApiResponse("fail", null, "Số điện thoại chỉ được nhập chữ số");
-//                return new ResponseEntity<>(response, HttpStatus.OK);
-//            }
+            // if (!phone.matches("\\d+")){
+            // ApiResponse response = new ApiResponse("fail", null, "Số điện thoại chỉ được
+            // nhập chữ số");
+            // return new ResponseEntity<>(response, HttpStatus.OK);
+            // }
             Account existingAccount = accountService.loginAction(phone, password);
             if (existingAccount != null && existingAccount.getPassword().equals(password)) {
+                session.setAttribute("accountId", existingAccount.getId());
                 ApiResponse response = new ApiResponse("success", existingAccount, "Đăng nhập thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
@@ -70,14 +75,15 @@ public class AccountController {
                 ApiResponse response = new ApiResponse("fail", null, "Không tìm thấy tài khoản");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             ApiResponse response = new ApiResponse("fail", null, "Lấy thông tin cá nhân thất bại: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/change-password/{accountId}/{oldPassword}/{newPassword}")
-    public ResponseEntity<?> changePassword(@PathVariable int accountId, @PathVariable String oldPassword, @PathVariable String newPassword) {
+    public ResponseEntity<?> changePassword(@PathVariable int accountId, @PathVariable String oldPassword,
+            @PathVariable String newPassword) {
         try {
             boolean success = accountService.changePassword(accountId, oldPassword, newPassword);
             if (success) {
@@ -94,12 +100,13 @@ public class AccountController {
     }
 
     @PutMapping("/update-account/{accountId}")
-    public ResponseEntity<?> updateAccount(@PathVariable int accountId, @RequestBody Map<String, String> accountDetails) {
+    public ResponseEntity<?> updateAccount(@PathVariable int accountId,
+            @RequestBody Map<String, String> accountDetails) {
         try {
             String newName = accountDetails.get("name");
             String newPhone = accountDetails.get("phone");
             String newEmail = accountDetails.get("email");
-//        String newPassword = accountDetails.get("password");
+            // String newPassword = accountDetails.get("password");
             String newBirthday0 = accountDetails.get("birthday");
             String newGender = accountDetails.get("gender");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -110,7 +117,8 @@ public class AccountController {
                 ApiResponse response = new ApiResponse("fail", null, "Sai định dạng ngày");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newBirthday, newGender);
+            boolean updated = accountService.updateAccount(accountId, newName, newPhone, newEmail, newBirthday,
+                    newGender);
             if (updated) {
                 ApiResponse response = new ApiResponse("success", null, "Cập nhật thông tin thành công");
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -123,6 +131,7 @@ public class AccountController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
+
     @PostMapping("/forget-password")
     public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> request) {
         try {
@@ -144,4 +153,3 @@ public class AccountController {
         }
     }
 }
-

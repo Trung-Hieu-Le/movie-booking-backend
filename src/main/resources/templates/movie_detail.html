@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <title>Chi tiết phim</title>
+  <head th:replace="fragments/head :: head"></head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .movie-container {
+      display: flex;
+      gap: 20px;
+    }
+    .movie-image img {
+      max-width: 300px;
+      border-radius: 10px;
+    }
+    .movie-details h1 {
+      margin-top: 0;
+    }
+  </style>
+  <body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="container mt-5">
+      <!-- <h1>Chi tiết phim</h1> -->
+
+      <!-- Container hiển thị phim -->
+      <div id="movieDetail" class="movie-container">
+        <div class="movie-image">
+          <img id="movieImage" src="" alt="Poster phim" />
+        </div>
+        <div class="movie-details">
+          <h1 id="movieTitle"></h1>
+          <p><strong>Đạo diễn:</strong> <span id="movieDirector"></span></p>
+          <p><strong>Diễn viên:</strong> <span id="movieActors"></span></p>
+          <p>
+            <strong>Ngày khởi chiếu:</strong> <span id="releaseDate"></span>
+          </p>
+          <p><strong>Giá vé:</strong> <span id="moviePrice"></span> VNĐ</p>
+          <p><strong>Giới hạn tuổi:</strong> <span id="ageLimit"></span></p>
+          <p><strong>Thể loại:</strong> <span id="genres"></span></p>
+          <p><strong>Mô tả:</strong> <span id="description"></span></p>
+          <a id="bookingButton" class="btn btn-primary">Đặt vé</a>
+        </div>
+      </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+    <div th:replace="fragments/foot"></div>
+
+    <script>
+      const movieId = [[${movieId}]];
+      const accountId = [[${accountId} != null ? ${accountId} : 'null']];
+      console.log(accountId);
+
+
+      fetch(`/api/movies/${movieId}`)
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.status === "success") {
+            const movie = res.data;
+            document.getElementById("movieTitle").textContent = movie.title;
+            document.getElementById("movieDirector").textContent = movie.director;
+            document.getElementById("movieActors").textContent = movie.actors;
+            document.getElementById("releaseDate").textContent = new Date(movie.releaseDate).toLocaleDateString();
+            document.getElementById("moviePrice").textContent = movie.price.toLocaleString();
+            document.getElementById("ageLimit").textContent = movie.ageLimit + "+";
+            document.getElementById("genres").textContent = movie.genres.join(", ");
+            document.getElementById("description").textContent = movie.description;
+            document.getElementById("movieImage").src = movie.image;
+          } else {
+            document.getElementById("movieDetail").innerHTML = "<h2>Không tìm thấy chi tiết phim.</h2>";
+          }
+        })
+        .catch((error) => {
+          document.getElementById("movieDetail").innerHTML = `<p>Lỗi tải dữ liệu: ${error.message}</p>`;
+        });
+
+      document.getElementById("bookingButton").addEventListener("click", function(event) {
+        if (accountId === null) {
+          alert("Bạn cần đăng nhập để đặt vé.");
+          window.location.href = "/login";
+          event.preventDefault();
+        } else {
+          window.location.href = `/book/${movieId}`;
+        }
+      });
+    </script>
+  </body>
+</html>

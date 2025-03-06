@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Thông tin cá nhân</h2>
+        </div>
+        <div class="card-body">
+            <div id="profile-info">
+            </div>
+            <a href="/edit-profile" class="btn btn-primary mt-3">Chỉnh sửa thông tin</a>
+            <a href="/change-password" class="btn btn-danger mt-3">Đổi mật khẩu</a>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<div th:replace="fragments/foot"></div>
+
+<script>
+    const accountId = [[${accountId}]];
+    axios.get(`/api/get-account/${accountId}`).then(res => {
+        if (res.data.status === "success") {
+            const acc = res.data.data;
+            document.getElementById('profile-info').innerHTML = `
+                <p><strong>Tên:</strong> ${acc.name}</p>
+                <p><strong>Email:</strong> ${acc.email}</p>
+                <p><strong>Số điện thoại:</strong> ${acc.phone}</p>
+                <p><strong>Ngày sinh:</strong> ${new Date(acc.birthday).toLocaleDateString()}</p>
+                <p><strong>Giới tính:</strong> ${acc.gender}</p>
+            `;
+        } else {
+            document.getElementById('profile-info').innerText = "Không tìm thấy tài khoản.";
+        }
+    });
+</script>
+</body>
+</html>

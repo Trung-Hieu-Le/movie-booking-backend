@@ -1,0 +1,46 @@
+<!-- fragments/header.html -->
+<header xmlns:th="http://www.thymeleaf.org" class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Movie Booking</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/all-movies-today}">Phim đang chiếu</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/all-movies-upcoming}">Phim sắp chiếu</a></li>
+                
+                    <!-- Nếu đã đăng nhập -->
+                    <li class="nav-item" th:if="${session.accountId != null}">
+                        <a class="nav-link" th:href="@{'/get-tickets-by-account/' + ${session.accountId}}">Vé của tôi</a>
+                    </li>
+                
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Tài khoản
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            
+                            <!-- Chưa đăng nhập -->
+                            <li th:if="${session.accountId == null}">
+                                <a class="dropdown-item" th:href="@{/login}">Đăng nhập</a>
+                            </li>
+                            <li th:if="${session.accountId == null}">
+                                <a class="dropdown-item" th:href="@{/register}">Đăng ký</a>
+                            </li>
+                
+                            <!-- Đã đăng nhập -->
+                            <li th:if="${session.accountId != null}">
+                                <a class="dropdown-item" th:href="@{/profile}">Thông tin cá nhân</a>
+                            </li>
+                            <li th:if="${session.accountId != null}">
+                                <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>                              
+            </div>
+        </div>
+    </nav>
+</header>

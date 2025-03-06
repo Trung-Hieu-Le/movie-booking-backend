@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+<title>Đặt vé phim</title>
+<style>
+  /* Style đơn giản cho bản đồ ghế */
+  .seat {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border: 1px solid #444;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  .seat.selected {
+    background-color: green;
+    color: white;
+  }
+
+  .seat.booked {
+    background-color: red;
+    color: white;
+    cursor: not-allowed;
+  }
+</style>
+
+<body>
+  <header th:replace="fragments/header :: header"></header>
+
+  <div class="container mt-5">
+    <div id="alertMessage" class="alert text-center position-fixed top-0 start-50 translate-middle-x mt-3 d-none"
+      style="z-index: 1055; width: 50%;"></div>
+
+    <h2>Đặt vé cho phim "<span th:text="${movieTitle}"></span>"</h2>
+    <div class="row">
+      <div class="col-md-3">
+        <img th:src="@{${movieImage}}" alt="movie image" style="width: 100%" />
+        <div class="mt-3">
+          <label class="fw-bold">Tác giả: &nbsp;</label><span th:text="${movieDirector}"></span><br>
+          <label class="fw-bold">Ngày phát hành: &nbsp;</label><span
+            th:text="${#dates.format(movieReleaseDate, 'dd-MM-yyyy')}"></span><br>
+          <label class="fw-bold">Giới hạn tuổi: &nbsp;</label><span th:text="${movieAgeLimit}"></span><br>
+          <label class="fw-bold">Giá vé: &nbsp;</label><span th:text="${moviePrice}"></span><br>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div>
+          <label>Chọn suất chiếu: </label>
+          <select id="showtimeSelect" class="form-control">
+            <option value="">--Chọn suất chiếu--</option>
+          </select>
+        </div>
+
+        <!-- Bản đồ ghế -->
+        <div id="seatMap" style="margin-top: 20px">
+          <h3>Chọn ghế</h3>
+          <p class="fs-6">Chú thích: <span class="seat px-2 text-light"
+              style="background-color: green; width: fit-content;">Ghế trống</span> <span class="seat px-2 text-light"
+              style="background-color: red; width: fit-content;">Ghế đã đặt</span></p>
+          <div id="seatsContainer">
+          </div>
+        </div>
+
+        <!-- Nút đặt vé -->
+        <div style="margin-top: 20px">
+          <button class="btn btn-primary" id="bookBtn">Đặt vé</button>
+          <button class="btn btn-secondary"
+            th:onclick="'window.location.href=\'/movie-detail/\' + ' + ${ movieId }">Quay lại</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chọn suất chiếu -->
+
+  </div>
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Xác nhận đặt vé</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Phim:</strong> <span id="modalMovieTitle"></span></p>
+          <p><strong>Ghế đã chọn:</strong> <span id="modalSeats"></span></p>
+          <p><strong>Tổng tiền:</strong> <span id="modalTotalPrice"></span> VNĐ</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-primary" id="confirmBookingBtn">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer th:replace="fragments/footer :: footer"></footer>
+  <div th:replace="fragments/foot"></div>
+  <script>
+    const movieId = [[${ movieId }]];
+    const accountId = [[${ accountId }]];
+    const movieTitle = "[[${ movieTitle }]]";
+    const pricePerSeat = [[${ moviePrice }]];
+
+    let bookedSeats = []; // Danh sách ghế đã được đặt theo suất chiếu
+    let selectedSeats = []; // Danh sách ghế người dùng chọn
+    const seatContainer = document.getElementById("seatsContainer");
+    const showtimeSelect = document.getElementById("showtimeSelect");
+
+    axios
+      .get(`/api/get-showtime/${movieId}`)
+      .then((res) => {
+        if (res.data.status === "success") {
+          const showtimes = res.data.data;
+          showtimes.forEach((show) => {
+            const option = document.createElement("option");
+            option.value = show.id;
+            const st = new Date(show.showTime);
+            option.text = `${st.toLocaleDateString()} ${st.toLocaleTimeString()}`;
+            showtimeSelect.appendChild(option);
+          });
+        }
+      })
+      .catch((err) => console.error(err));
+
+    showtimeSelect.addEventListener("change", function () {
+      const showtimeId = this.value;
+      if (!showtimeId) return;
+      bookedSeats = [];
+      selectedSeats = [];
+      seatContainer.innerHTML = "";
+      axios
+        .get(`/api/get-seats/${movieId}/${showtimeId}`)
+        .then((res) => {
+          if (res.data.status === "success") {
+            bookedSeats = res.data.data;
+            renderSeatMap();
+          }
+        })
+        .catch((err) => console.error(err));
+    });
+
+    function renderSeatMap() {
+      const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+      const cols = 10;
+      rows.forEach((row) => {
+        const rowDiv = document.createElement("div");
+        for (let i = 1; i <= cols; i++) {
+          const seatLabel = row + i;
+          const seatDiv = document.createElement("div");
+          seatDiv.classList.add("seat");
+          seatDiv.textContent = seatLabel;
+          if (bookedSeats.includes(seatLabel)) {
+            seatDiv.classList.add("booked");
+          } else {
+            seatDiv.addEventListener("click", function () {
+              if (seatDiv.classList.contains("selected")) {
+                seatDiv.classList.remove("selected");
+                selectedSeats = selectedSeats.filter((s) => s !== seatLabel);
+              } else {
+                seatDiv.classList.add("selected");
+                selectedSeats.push(seatLabel);
+              }
+            });
+          }
+          rowDiv.appendChild(seatDiv);
+        }
+        seatContainer.appendChild(rowDiv);
+      });
+    }
+
+    document.getElementById("bookBtn").addEventListener("click", function () {
+      const showtimeId = showtimeSelect.value;
+      if (!showtimeId) {
+        alert("Vui lòng chọn suất chiếu.");
+        return;
+      }
+      if (selectedSeats.length === 0) {
+        alert("Vui lòng chọn ít nhất một ghế.");
+        return;
+      }
+      const totalPrice = pricePerSeat * selectedSeats.length;
+      console.log("Đã chọn ghế: ", selectedSeats);
+      console.log("Tổng tiền: ", totalPrice);
+      document.getElementById("modalMovieTitle").textContent = movieTitle;
+      document.getElementById("modalSeats").textContent = selectedSeats.join(", ");
+      document.getElementById("modalTotalPrice").textContent = totalPrice.toLocaleString();
+      const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+      confirmModal.show();
+      document.getElementById("confirmBookingBtn").onclick = function () {
+        axios.post("/api/book-ticket", {
+          accountId: accountId,
+          showtimeId: parseInt(showtimeId),
+          seatList: selectedSeats,
+          totalPrice: totalPrice,
+        })
+          .then((res) => {
+            confirmModal.hide();
+            showAlert("Đặt vé thành công!", "success");
+            setTimeout(() => window.location.href = "/", 3000);
+          })
+          .catch((err) => {
+            confirmModal.hide();
+            const errorMessage = err.response?.data?.message || "Đặt vé thất bại.";
+            showAlert(errorMessage, "danger");
+            console.error(err);
+          });
+      };
+    });
+
+    function showAlert(message, type) {
+      const alertBox = document.getElementById("alertMessage");
+      alertBox.textContent = message;
+      alertBox.className = `alert alert-${type} text-center position-fixed top-0 start-50 translate-middle-x mt-3`;
+      alertBox.classList.remove("d-none");
+      setTimeout(() => alertBox.classList.add("d-none"), 2500);
+    }
+  </script>
+</body>
+
+</html>
