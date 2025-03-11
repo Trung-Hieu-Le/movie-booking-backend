@@ -36,6 +36,9 @@ public class Movie {
     @Column(nullable = false)
     private int price;
 
+    @Column
+    private int duration;
+
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "movie_id")
 //    private List<Showtime> showtimes;
@@ -51,7 +54,7 @@ public class Movie {
 
     public Movie(){}
 
-    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate) {
+    public Movie(String title, String description, String image, int ageLimit, String director, int price, String actors, Date releaseDate, int duration) {
         this.title = title;
         this.description = description;
         this.image = image;
@@ -60,6 +63,7 @@ public class Movie {
         this.price = price;
         this.actors = actors;
         this.releaseDate = releaseDate;
+        this.duration = duration;
 //        this.showtimes = showtimes;
 //        this.genres = genres;
     }
@@ -134,6 +138,14 @@ public class Movie {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
 //    public List<Showtime> getShowtimes() {

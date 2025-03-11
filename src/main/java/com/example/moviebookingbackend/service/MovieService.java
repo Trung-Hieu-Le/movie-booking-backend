@@ -36,6 +36,7 @@ public class MovieService {
             movieInfo.setActors(movie.getActors());
             movieInfo.setPrice(movie.getPrice());
             movieInfo.setGenres(genres);
+            movieInfo.setDuration(movie.getDuration());
             movieInfos.add(movieInfo);
         }
         return movieInfos;
@@ -60,6 +61,7 @@ public class MovieService {
             movieInfo.setActors(movie.getActors());
             movieInfo.setPrice(movie.getPrice());
             movieInfo.setGenres(genres);
+            movieInfo.setDuration(movie.getDuration());
 
         return movieInfo;
     }

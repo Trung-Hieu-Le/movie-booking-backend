@@ -1,30 +1,66 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="fragments/head :: head"></head>
 <title>Đặt vé phim</title>
+<head th:replace="fragments/head :: head"></head>
 <style>
-  /* Style đơn giản cho bản đồ ghế */
-  .seat {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
-    border: 1px solid #444;
-    display: inline-block;
+
+  .screen {
+    width: 100%;
     text-align: center;
-    line-height: 40px;
-    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    background: linear-gradient(to bottom, #777, #fff);
+    border-radius: 100px 100px 0 0;
+    color: black;
   }
 
-  .seat.selected {
-    background-color: green;
-    color: white;
+  .seats-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .seat-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+
+  .seat {
+    width: 50px;
+    height: 50px;
+    margin: 3px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: black;
   }
 
   .seat.booked {
-    background-color: red;
+    background: red;
     color: white;
     cursor: not-allowed;
+  }
+
+  .seat.selected {
+    background: green;
+    color: white;
+  }
+
+  .seat-gap {
+    width: 10%;
+  }
+
+  .row-gap {
+    height: 20px;
   }
 </style>
 
@@ -35,19 +71,25 @@
     <div id="alertMessage" class="alert text-center position-fixed top-0 start-50 translate-middle-x mt-3 d-none"
       style="z-index: 1055; width: 50%;"></div>
 
-    <h2>Đặt vé cho phim "<span th:text="${movieTitle}"></span>"</h2>
-    <div class="row">
-      <div class="col-md-3">
+    <h2 class="text-light">Đặt vé cho phim "<span th:text="${movieTitle}"></span>"</h2>
+    <div class="row text-light mt-3">
+      <div class="col-md-5 text-justify">
         <img th:src="@{${movieImage}}" alt="movie image" style="width: 100%" />
         <div class="mt-3">
-          <label class="fw-bold">Tác giả: &nbsp;</label><span th:text="${movieDirector}"></span><br>
+          <label class="fw-bold">Đạo diễn: &nbsp;</label><span th:text="${movieDirector}"></span><br>
+          <label class="fw-bold">Diễn viên: &nbsp;</label><span th:text="${movieActors}"></span><br>
+          <label class="fw-bold">Thể loại: &nbsp;</label><span
+            th:text="${#strings.arrayJoin(movieGenres, ', ')}"></span><br>
+          <label class="fw-bold">Thời lượng: &nbsp;</label><span th:text="${movieDuration}"></span> phút<br>
+          <label class="fw-bold">Nội dung: &nbsp;</label><span th:text="${movieDescription}"></span><br>
           <label class="fw-bold">Ngày phát hành: &nbsp;</label><span
-            th:text="${#dates.format(movieReleaseDate, 'dd-MM-yyyy')}"></span><br>
-          <label class="fw-bold">Giới hạn tuổi: &nbsp;</label><span th:text="${movieAgeLimit}"></span><br>
-          <label class="fw-bold">Giá vé: &nbsp;</label><span th:text="${moviePrice}"></span><br>
+            th:text="${#dates.format(movieReleaseDate, 'dd/MM/yyyy')}"></span><br>
+          <label class="fw-bold">Giới hạn tuổi: &nbsp;</label><span
+            th:text="${movieAgeLimit == 0 ? 'Không giới hạn' : movieAgeLimit}"></span><br>
+          <label class="fw-bold">Giá vé: &nbsp;</label><span th:text="${#numbers.formatDecimal(moviePrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span><br>
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-7">
         <div>
           <label>Chọn suất chiếu: </label>
           <select id="showtimeSelect" class="form-control">
@@ -56,21 +98,25 @@
         </div>
 
         <!-- Bản đồ ghế -->
-        <div id="seatMap" style="margin-top: 20px">
-          <h3>Chọn ghế</h3>
-          <p class="fs-6">Chú thích: <span class="seat px-2 text-light"
-              style="background-color: green; width: fit-content;">Ghế trống</span> <span class="seat px-2 text-light"
-              style="background-color: red; width: fit-content;">Ghế đã đặt</span></p>
-          <div id="seatsContainer">
+         <center>
+          <div id="seatMap" style="margin-top: 20px">
+            <h3>Chọn ghế</h3>
+            <p class="fs-6">Chú thích: <span class="py-1 px-2 text-white"
+                style="background-color: green; width: fit-content;">Ghế trống</span>
+              <span class="py-1 px-2 text-white" 
+              style="background-color: red; width: fit-content;">Ghế đã đặt</span>
+            </p>
+            <div id="seatsContainer">
+            </div>
           </div>
-        </div>
-
-        <!-- Nút đặt vé -->
-        <div style="margin-top: 20px">
-          <button class="btn btn-primary" id="bookBtn">Đặt vé</button>
-          <button class="btn btn-secondary"
-            th:onclick="'window.location.href=\'/movie-detail/\' + ' + ${ movieId }">Quay lại</button>
-        </div>
+          <!-- Nút đặt vé -->
+          <div class="mt-3">
+            <button class="btn btn-primary" id="bookBtn">Đặt vé</button>
+            <button class="btn btn-light"
+              th:onclick="'window.location.href=\'/movie-detail/\' + ' + ${ movieId }">Quay lại</button>
+          </div>
+         </center>
+      
       </div>
     </div>
 
@@ -90,8 +136,8 @@
           <p><strong>Tổng tiền:</strong> <span id="modalTotalPrice"></span> VNĐ</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
           <button type="button" class="btn btn-primary" id="confirmBookingBtn">Xác nhận</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
         </div>
       </div>
     </div>
@@ -144,15 +190,31 @@
     });
 
     function renderSeatMap() {
+      seatContainer.innerHTML = "";
+
+      // Thêm màn hình
+      const screenDiv = document.createElement("div");
+      screenDiv.classList.add("screen");
+      screenDiv.textContent = "SCREEN";
+      seatContainer.appendChild(screenDiv);
+
       const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
       const cols = 10;
-      rows.forEach((row) => {
+
+      // Tạo container bọc tất cả các ghế, căn giữa với 80% width
+      const seatsWrapper = document.createElement("div");
+      seatsWrapper.classList.add("seats-wrapper");
+
+      rows.forEach((row, rowIndex) => {
         const rowDiv = document.createElement("div");
+        rowDiv.classList.add("seat-row");
+
         for (let i = 1; i <= cols; i++) {
           const seatLabel = row + i;
           const seatDiv = document.createElement("div");
           seatDiv.classList.add("seat");
           seatDiv.textContent = seatLabel;
+
           if (bookedSeats.includes(seatLabel)) {
             seatDiv.classList.add("booked");
           } else {
@@ -166,11 +228,28 @@
               }
             });
           }
+
+          if (i === 6) {
+            const gap = document.createElement("div");
+            gap.classList.add("seat-gap");
+            rowDiv.appendChild(gap);
+          }
+
           rowDiv.appendChild(seatDiv);
         }
-        seatContainer.appendChild(rowDiv);
+
+        if (rowIndex === 5) {
+          const gapRow = document.createElement("div");
+          gapRow.classList.add("row-gap");
+          seatsWrapper.appendChild(gapRow);
+        }
+
+        seatsWrapper.appendChild(rowDiv);
       });
+
+      seatContainer.appendChild(seatsWrapper);
     }
+
 
     document.getElementById("bookBtn").addEventListener("click", function () {
       const showtimeId = showtimeSelect.value;
@@ -216,7 +295,7 @@
       alertBox.textContent = message;
       alertBox.className = `alert alert-${type} text-center position-fixed top-0 start-50 translate-middle-x mt-3`;
       alertBox.classList.remove("d-none");
-      setTimeout(() => alertBox.classList.add("d-none"), 2500);
+      setTimeout(() => alertBox.classList.add("d-none"), 3000);
     }
   </script>
 </body>

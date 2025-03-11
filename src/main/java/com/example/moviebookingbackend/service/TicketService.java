@@ -70,12 +70,17 @@ public class TicketService {
         Movie movie = movieRepository.findMovieByTicketId(ticketId).getFirst();
         Date showTime = showtimeRepository.findShowtimeByTicketId(ticketId);
         List<String> seats = seatRelationshipRepository.findSeatsByTicketId(ticketId);
+        Date createdAt = ticketRepository.findById(ticketId).get().getCreatedAt();
+        int totalPrice = ticketRepository.findById(ticketId).get().getTotalPrice();
 
         TicketInfo ticketInfo = new TicketInfo();
         ticketInfo.setMovieTitle(movie != null ? movie.getTitle() : "");
         ticketInfo.setMovieImage(movie != null ? movie.getImage() : "");
         ticketInfo.setShowTime(showTime);
         ticketInfo.setSeats(seats);
+        ticketInfo.setTotalPrice(totalPrice);
+        ticketInfo.setMovieDescription(movie != null ? movie.getDescription() : "");
+        ticketInfo.setCreatedAt(createdAt);
 
         return ticketInfo;
     }

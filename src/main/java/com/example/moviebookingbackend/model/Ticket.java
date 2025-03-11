@@ -2,6 +2,8 @@ package com.example.moviebookingbackend.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +35,16 @@ public class Ticket {
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice;
 
-    public Ticket(){}
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Timestamp updatedAt;
+    
+    public Ticket() {
+        this.createdAt = Timestamp.from(Instant.now());
+        this.updatedAt = Timestamp.from(Instant.now());
+    }
 
     public Ticket(int showtimeId, int accountId, Integer totalSeat, Integer totalPrice) {
         this.showtimeId = showtimeId;
@@ -89,5 +100,21 @@ public class Ticket {
 
     public void setTotalPrice(Integer totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

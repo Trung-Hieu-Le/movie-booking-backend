@@ -31,21 +31,33 @@ public class HomeAccountController {
 
     @GetMapping("/profile")
     public String viewProfile(Model model, HttpSession session) {
-        int accountId = (int) session.getAttribute("accountId");
+        Integer accountId = (Integer) session.getAttribute("accountId");
+        if (accountId == null) {
+            model.addAttribute("error", "Bạn phải đăng nhập để xem hồ sơ cá nhân.");
+            return "redirect:/login";
+        }
         model.addAttribute("accountId", accountId);
         return "profile";
     }
 
     @GetMapping("/edit-profile")
     public String editProfile(Model model, HttpSession session) {
-        int accountId = (int) session.getAttribute("accountId");
+        Integer accountId = (Integer) session.getAttribute("accountId");
+        if (accountId == null) {
+            model.addAttribute("error", "Bạn phải đăng nhập để chỉnh sửa hồ sơ cá nhân.");
+            return "redirect:/login";
+        }
         model.addAttribute("accountId", accountId);
         return "edit_profile";
     }
 
     @GetMapping("/change-password")
     public String changePassword(Model model, HttpSession session) {
-        int accountId = (int) session.getAttribute("accountId");
+        Integer accountId = (Integer) session.getAttribute("accountId");
+        if (accountId == null) {
+            model.addAttribute("error", "Bạn phải đăng nhập để đổi mật khẩu.");
+            return "redirect:/login";
+        }
         model.addAttribute("accountId", accountId);
         return "change_password";
     }

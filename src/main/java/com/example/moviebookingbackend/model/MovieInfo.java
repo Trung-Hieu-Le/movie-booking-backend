@@ -20,11 +20,12 @@ public class MovieInfo {
     private String actors;
     private int price;
     private List<String> genres;
+    private int duration;
 
     public MovieInfo() {
     }
 
-    public MovieInfo(int id, String title, String description, String image, Date releaseDate, int ageLimit, String director, String actors, int price, List<String> genres) {
+    public MovieInfo(int id, String title, String description, String image, Date releaseDate, int ageLimit, String director, String actors, int price, List<String> genres, int duration) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,6 +36,7 @@ public class MovieInfo {
         this.actors = actors;
         this.price = price;
         this.genres = genres;
+        this.duration = duration;
     }
 
     public int getId() {
@@ -115,5 +117,13 @@ public class MovieInfo {
 
     public void setGenres(List<String> genres) {
         this.genres = genres;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

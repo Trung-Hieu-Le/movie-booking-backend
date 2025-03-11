@@ -17,7 +17,7 @@
   }
 
   .ticket img {
-    width: 150px;
+    max-width: 150px;
     height: auto;
   }
 
@@ -35,22 +35,37 @@
   <header th:replace="fragments/header :: header"></header>
 
   <div class="container mt-5">
-    <h1>Lịch sử đặt vé</h1>
+    <h1 class=" text-white">Lịch sử đặt vé</h1>
 
     <div th:if="${tickets != null}">
-      <div th:each="ticket : ${tickets}" class="ticket">
-        <div class="ticket-title" th:text="${ticket.movieTitle}"></div>
-        <img th:src="${ticket.movieImage}" alt="Movie Image" />
-        <p>
-          <strong>Suất chiếu:</strong>
-          <span th:text="${#dates.format(ticket.showTime, 'dd/MM/yyyy HH:mm')}"></span>
-        </p>
-        <p class="seats"><strong>Ghế:</strong>
-          <span th:each="seat, iterStat : ${ticket.seats}">
-            <span th:text="${seat}"></span><span th:if="${!iterStat.last}">, </span>
-          </span>
-        </p>
-
+      <div th:each="ticket : ${tickets}" class="ticket row bg-white">
+        <div class="col-md-2">
+          <img th:src="${ticket.movieImage}" alt="Movie Image" />
+        </div>
+        <div class="col-md-10">
+          <div class="ticket-title" th:text="${ticket.movieTitle}"></div>
+          <div>
+            <strong>Suất chiếu:</strong>
+            <span th:text="${#dates.format(ticket.showTime, 'dd/MM/yyyy HH:mm')}"></span>
+          </div>
+          <div>
+            <strong>Nội dung</strong>
+            <span th:text="${ticket.movieDescription}"></span>
+          </div>
+          <div class="seats"><strong>Ghế:</strong>
+            <span th:each="seat, iterStat : ${ticket.seats}">
+              <span th:text="${seat}"></span><span th:if="${!iterStat.last}">, </span>
+            </span>
+          </div>
+          <div>
+            <strong>Giá vé</strong>
+            <span th:text="${#numbers.formatDecimal(ticket.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span><br>
+          </div>
+          <div>
+            <strong>Ngày đặt vé</strong>
+            <span th:text="${#dates.format(ticket.createdAt, 'dd/MM/yyyy HH:mm:ss')}"></span>
+          </div>
+        </div>
       </div>
     </div>
     <div th:if="${tickets == null}">

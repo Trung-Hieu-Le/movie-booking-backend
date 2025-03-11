@@ -30,7 +30,12 @@ public class HomeTicketController {
     public String viewTickets(@PathVariable int accountId, Model model) {
         try {
             Integer sessionAccountId = (Integer) session.getAttribute("accountId");
-            if (sessionAccountId == null || sessionAccountId != accountId) {
+            if (sessionAccountId == null) {
+                model.addAttribute("tickets", null);
+                model.addAttribute("message", "Bạn cần đăng nhập để xem lịch sử đặt vé");
+                return "ticket_by_account_list";
+            }
+            if (sessionAccountId != accountId) {
                 model.addAttribute("tickets", null);
                 model.addAttribute("message", "Bạn không đủ quyền xem lịch sử đặt vé người khác");
                 return "ticket_by_account_list";
@@ -54,16 +59,23 @@ public class HomeTicketController {
     @GetMapping("/book/{movieId}")
     public String bookTicketPage(@PathVariable int movieId, Model model, HttpSession session) {
         Integer accountId = (Integer) session.getAttribute("accountId");
-        MovieInfo movie = movieService.getMovieById(movieId); // Fetch movie details using movieId
+        if (accountId == null) {
+            model.addAttribute("message", "Bạn cần đăng nhập để đặt vé");
+            return "redirect:/login";
+        }
+        MovieInfo movie = movieService.getMovieById(movieId);
         model.addAttribute("movieId", movieId);
-        model.addAttribute("accountId", accountId != null ? accountId : 0);
+        model.addAttribute("accountId", accountId);
         model.addAttribute("movieTitle", movie.getTitle());
         model.addAttribute("movieImage", movie.getImage());
         model.addAttribute("movieDescription", movie.getDescription());
         model.addAttribute("movieDirector", movie.getDirector());
+        model.addAttribute("movieActors", movie.getActors());
+        model.addAttribute("movieGenres", movie.getGenres());
         model.addAttribute("movieReleaseDate", movie.getReleaseDate());
         model.addAttribute("movieAgeLimit", movie.getAgeLimit());
         model.addAttribute("moviePrice", movie.getPrice());
+        model.addAttribute("movieDuration", movie.getDuration());
         return "book_ticket";
     }
 }
